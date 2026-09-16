@@ -1,0 +1,50 @@
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background: #e6f0ff;
+}
+header{
+    font-family: "Share Tech", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    background-color: rgba(75, 75, 75, 0.2);
+    color: #004080;
+    padding: 15px;
+    text-align: center;
+    font-size: 120%;
+}
+.segmentos {
+    display: flex;
+    justify-content: left;
+    border-radius: 2px;
+    background-color: #f5f7fa;
+    width: 100%;
+    height: 80px;
+}
+
+
+.enlaces {
+    display:flex;
+    font-family: "Share Tech", sans-serif;
+    background: linear-gradient(to top, #004080 0%, transparent 100%);
+    background-size: 100% 0%;
+    background-repeat: no-repeat;
+    transition: background-size 0.4s ease;
+    align-items: center;
+    width: 150px;
+    justify-items: center;
+    gap: 80px;  
+    border-radius: 5px;
+}
+
+.enlaces a {
+    text-decoration: none;
+    color: black;
+    padding: 10px 20px;  
+    border-radius: 4px;
+}
+
+.enlaces:hover{
+    background-size: 100% 100%;
+}
+

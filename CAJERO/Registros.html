@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registros</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="formulario">
+    <form action="mailto:cacordoba@cesde.net, andrduque@cesde.net" method="post" enctype="text/plain">
+        
+
+        <div class="tipodoc">
+        <label for="tipoDoc">Identificación</label>
+        <select id="tipoDoc" name="tipoDoc" required>
+            <option value="" disabled selected>Seleccione un tipo de documento</option>
+            <option value="cc">Cédula Ciudadanía</option>
+            <option value="pas">Pasaporte</option>
+            <option value="ce">Cédula Extranjería</option>
+        </select>
+        </div>
+
+        <div class="datos">
+        <input type="text" placeholder="Número Id" required>
+        </div>
+
+        <div class="datos">
+        <input type="text" placeholder="Nombres" required>
+        </div>
+
+        <div class="datos">
+        <input type="text" placeholder="Apellidos" required>
+        </div>
+
+        <div class="datos">
+        <input type="email" placeholder="Correo electrónico" required>
+        </div>
+
+        <div class="datos">
+        <input type="password" placeholder="Contraseña" required>
+        </div>
+
+            <fieldset class="intereses">
+                <legend>Intereses</legend>
+                    <input type="checkbox" name="intereses" id="Tarjetas Debito" value="Tarjetas Debito">
+                    <label for="Tarjetas Debito">Tarjetas Debito</label>
+                    <input type="checkbox" name="intereses" id="Tarjetas Credito" value="Tarjetas Credito">
+                    <label for="Tarjetas Credito">Tarjetas Credito</label>
+                    <input type="checkbox" name="intereses" id="CDT" value="CDT">
+                    <label for="CDT">CDT</label>
+                    <input type="checkbox" name="intereses" id="Prestamos" value="Prestamos">
+                    <label for="Prestamos">Prestamos</label>
+            </fieldset>
+
+            <div class="envio">
+                <button type="submit">Enviar</button>
+                <button type="reset">Limpiar</button>
+                <a href="index.html"><button type="button">Regresar</button></a>
+            </div>
+    </form>
+    </div>
+</body>
+</html>

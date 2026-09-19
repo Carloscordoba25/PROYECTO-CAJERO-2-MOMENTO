@@ -1,9 +1,15 @@
 
 body{
+    position: relative;
     font-family: Arial, Helvetica, sans-serif;
-    background: #e6f0ff;
+    background: #6ec8bd;
+    height: 100vh;
+    margin: 0;
 }
+
+
 header{
+    position:static;
     font-family: "Share Tech", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -12,6 +18,8 @@ header{
     padding: 15px;
     text-align: center;
     font-size: 120%;
+
+/*---------------------------------------------barnner de registrio o login----------------------------------------------------------*/    
 }
 .segmentos {
     display: flex;
@@ -26,7 +34,7 @@ header{
 .enlaces {
     display:flex;
     font-family: "Share Tech", sans-serif;
-    background: linear-gradient(to top, #004080 0%, transparent 100%);
+    background: linear-gradient(to top, #aad69d 0%, transparent 100%);
     background-size: 100% 0%;
     background-repeat: no-repeat;
     transition: background-size 0.4s ease;
@@ -47,4 +55,202 @@ header{
 .enlaces:hover{
     background-size: 100% 100%;
 }
+/*---------------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------barnner de Nosotros----------------------------------------------------------*/
 
+.nosotros{
+    display: flex;
+    gap: 0;
+    justify-content: right;
+    background-color: #aad69d;
+}
+
+.nosotros a{
+    color:white;
+    text-decoration: none;
+    padding: 10px 20px;
+}
+
+.nosotros a + a {
+    border-left: 2px solid white;
+}
+
+/*---------------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------Articulo compromiso y calidad----------------------------------------------------*/
+
+.informacion {
+  width: 100%;
+  height: 500px;
+  overflow: hidden; /* oculta lo que se desborda */
+  position: relative;
+}
+
+.slider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.calidad {
+  display: flex;
+  width: 50%;
+  animation: slide 20s infinite; /* animación automática */
+}
+
+.calidad img {
+  height: 500px;
+  width: 100%;
+  object-fit: cover; /* ajusta la imagen al espacio */
+}
+
+/* Botones */
+.slider button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.prev { left: 10px; }
+.next { right: 10px; }
+
+/* Animación automática */
+@keyframes slide {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-600%); } /* recorre todas las imágenes originales */
+}
+
+/*---------------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------formulario Registros----------------------------------------------------*/
+.formulario{
+    position: relative;
+    top: 200px;
+    align-items: center;
+    justify-content:center;
+    color:azure;
+    border:2px solid;
+    border-radius:9px;
+    height: 450px;
+    width: 900px;
+    margin: 2px auto; /*para centrar el formulario*/
+    padding: 2px;
+    background-color: #aad69d; /* fondo oscuro */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    color: #fff;
+    font-family: 'Segoe UI', Helvetica, sans-serif;
+}
+.datos{
+    position:relative;
+    align-items: center;
+    justify-content:center;
+    border-radius:9px;
+    height: 50px;
+    max-width: 900px;
+    padding: 2px;
+    background-color: #aad69d; /* fondo oscuro */
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    color: #fff;
+    font-family: 'Segoe UI', Helvetica, sans-serif;
+}
+
+.tipodoc{
+    position:relative;
+    align-items: center;
+    justify-content:center;
+    color:black;
+    border-radius:9px;
+    height: 50px;
+    max-width: 900px;
+    padding: 2px;
+    background-color: #aad69d; /* fondo oscuro */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    color: black;
+    font-family: 'Segoe UI', Helvetica, sans-serif;
+}
+
+.intereses{
+    position:relative;
+    align-items: center;
+    justify-content:center;
+    color:azure;
+    border-radius:9px;
+    height: 50px;
+    max-width: 900px;
+    padding: 2px;
+    background-color: #aad69d; /* fondo oscuro */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    color: black;
+    font-family: 'Segoe UI', Helvetica, sans-serif;
+}
+.envio{
+  top:30px;
+   position: relative;
+   left: 340px; 
+}
+label {
+  display: inline;
+  margin-bottom: 0.5em;
+  font-weight: bold;}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select .datos {
+  width: 50%;
+  padding: 0.8em;
+  margin-bottom: 9.2em;
+  border: none;
+  border-radius: 6px;
+  background-color: #aad69d;
+  color: black;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+}
+
+  select{
+  width: 35%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  font-size: 16px;
+  color: #333;
+  box-sizing: border-box;
+}
+
+button {
+  top: 1px;
+  padding: 0.8em 1.5em;
+  margin-right: 1em;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+button[type="submit"] {
+  background-color: #0066cc;
+  color: #fff;
+}
+button[type="submit"]:hover {
+  background-color: #004999;
+}
+button[type="reset"] {
+  background-color: #555;
+  color: #fff;
+}
+
+button[type="reset"]:hover {
+  background-color: #333;
+}

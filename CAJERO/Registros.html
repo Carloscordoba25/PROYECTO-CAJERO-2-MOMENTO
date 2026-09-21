@@ -7,58 +7,79 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="formulario">
-    <form action="mailto:cacordoba@cesde.net, andrduque@cesde.net" method="post" enctype="text/plain">
-        
+    <!-- **************************REGISTRO DE USUSARIO NUEVO***************************** -->
 
-        <div class="tipodoc">
-        <label for="tipoDoc">Identificación</label>
-        <select id="tipoDoc" name="tipoDoc" required>
-            <option value="" disabled selected>Seleccione un tipo de documento</option>
-            <option value="cc">Cédula Ciudadanía</option>
-            <option value="pas">Pasaporte</option>
-            <option value="ce">Cédula Extranjería</option>
-        </select>
-        </div>
+    <!--FORMULARIO DE INGRESO-->
+    <div class="auto-emvolver">
+        <div class="tarjeta-auto">
+            <div class="panel-regitro">
+                <div class="logo">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <h1>Crear Cuenta</h1>
+                <p class="subtitulo">
+                    Comienza tu Experiencia con Nosotros
+                </p>
 
-        <div class="datos">
-        <input type="text" placeholder="Número Id" required>
-        </div>
+                <form>
+                    <!--Nombre-->
+                    <div class="entrada">
+                        <div class="brillo"></div>
+                        <div class="bordes"></div>
+                        <input type="text" id="entradaNombre" placeholder=" " autocomplete="name" required>
+                        <label for="entradaNombre">
+                            Nombre Completo
+                        </label>
+                    </div>
 
-        <div class="datos">
-        <input type="text" placeholder="Nombres" required>
-        </div>
+                    <!--Correo-->
+                    <div class="entrada">
+                        <div class="brillo"></div>
+                        <div class="bordes"></div>
+                        <input type="email" id="entradaCorreo" placeholder=" " autocomplete="correo" required>
+                        <label for="entradaCorreo">
+                            Correo Electronico
+                        </label>
+                    </div>
 
-        <div class="datos">
-        <input type="text" placeholder="Apellidos" required>
-        </div>
+                    <!--Contraseña-->
+                    <div class="entrada">
+                        <div class="brillo"></div>
+                        <div class="bordes"></div>
+                        <input type="password" id="entradaContraseña" placeholder=" " autocomplete="Nueva-Contraseña"
+                            required>
+                        <label for="entradaContraseña">
+                            Contraseña
+                        </label>
+                        <button type="button" class="Contraseña">
+                            <i id="faIcon" class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
 
-        <div class="datos">
-        <input type="email" placeholder="Correo electrónico" required>
-        </div>
+                    <!--Conformar contraseña-->
+                    <div class="entrada">
+                        <div class="brillo"></div>
+                        <div class="bordes"></div>
+                        <input type="password" id="confirmarContraseña" placeholder=" " autocomplete="Nueva-Contraseña"
+                            required>
+                        <label for="confirmarContraseña">
+                            Confirmar Contraseña
+                        </label>
+                    </div>
 
-        <div class="datos">
-        <input type="password" placeholder="Contraseña" required>
-        </div>
+                    <button type="submit" class="boton-principal">CREAR CUENTA</button>
+                </form>
 
-            <fieldset class="intereses">
-                <legend>Intereses</legend>
-                    <input type="checkbox" name="intereses" id="Tarjetas Debito" value="Tarjetas Debito">
-                    <label for="Tarjetas Debito">Tarjetas Debito</label>
-                    <input type="checkbox" name="intereses" id="Tarjetas Credito" value="Tarjetas Credito">
-                    <label for="Tarjetas Credito">Tarjetas Credito</label>
-                    <input type="checkbox" name="intereses" id="CDT" value="CDT">
-                    <label for="CDT">CDT</label>
-                    <input type="checkbox" name="intereses" id="Prestamos" value="Prestamos">
-                    <label for="Prestamos">Prestamos</label>
-            </fieldset>
-
-            <div class="envio">
-                <button type="submit">Enviar</button>
-                <button type="reset">Limpiar</button>
-                <a href="index.html"><button type="button">Regresar</button></a>
+                <div class="cambio-area">
+                    <span>
+                        Todo listo con tu cuenta?
+                    </span>
+                    <button type="button" class="cambio-circulo">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                </div>
             </div>
-    </form>
-    </div>
+         </div>   
+    </div>       
 </body>
 </html>

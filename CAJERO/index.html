@@ -1,49 +1,135 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏧 CAJERO💳</title>
-    <link rel="stylesheet" href="styles.css"> 
+    <title>Mi Plata - Financial Bank</title>
+    <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
-
-   <header class="menu-header">
-            <h1>BANCO CONFIANZA</h1>
-        <nav class="nosotros">
-            <a href="#transparencia.html">Transparencia</a>
-            <a href="#Nosotros.html">Nosotros</a>
+    <!-- Encabezado y Navegación -->
+    <header class="encabezado-bancario">
+        <div class="contenedor-logo">
+            <h1 class="logo-texto">MI PLATA <span class="logo-subtexto">FINANCIAL BANK</span></h1>
+        </div>
+        <nav class="navegacion-principal">
+            <a href="#inicio" class="enlace-nav">Inicio</a>
+            <a href="#iniciar-sesion" class="enlace-nav">Iniciar Sesión</a>
+            <a href="#registro" class="enlace-nav boton-destacado">Registrarse</a>
         </nav>
+    </header>
 
-
-        </nav>
-        <nav class="segmentos">
-            <div class="enlaces"><a href="#Ingresar.html">Ingresar</a></div>
-            <div class="enlaces"><a href="Registros.html">Registros</a></div>
-            <div class="enlaces"><a href="#Productos.html">Productos</a></div>
-        </nav>
-   </header>
-   <article class="informacion">
-        <div class="slider">
-            <button class="prev">◀</button>
-            <div class="calidad">
-                <img src="./IMG2/1.png" alt="Promo Tarjeta Credito">
-                <img src="./IMG2/2.png" alt="Promo Tarjeta Credito">
-                <img src="./IMG2/3.png" alt="Promo Tarjeta Credito">
-                <img src="./IMG2/4.png" alt="Promo Tarjeta Credito">
-                <img src="./IMG2/5.png" alt="Promo Tarjeta Credito">
-                <img src="./IMG2/6.jpg" alt="Promo Tarjeta Credito">
-                <img src="./IMG2/1.png" alt="Promo Tarjeta Credito">
-                <img src="./IMG2/2.png" alt="Promo Tarjeta Credito">
-                <img src="./IMG2/3.png" alt="Promo Tarjeta Credito">
-                <img src="./IMG2/4.png" alt="Promo Tarjeta Credito">
-                <img src="./IMG2/5.png" alt="Promo Tarjeta Credito">
-                <img src="./IMG2/6.jpg" alt="Promo Tarjeta Credito">
+    <!-- Contenedor Principal -->
+    <main class="contenido-principal">
+        
+        <!-- Sección: Página de Inicio -->
+        <section id="inicio" class="seccion-inicio activa">
+            <div class="tarjeta-presentacion">
+                <h2 class="titulo-bienvenida">Bienvenido a su Sucursal Virtual</h2>
+                <p class="texto-descripcion">Gestione sus productos de Ahorro, Corriente y Tarjeta de Crédito de forma rápida y segura.</p>
             </div>
-            <button class="next">▶</button>
-        </div>   
-   </article>
+        </section>
 
+        <!-- Sección: Inicio de Sesión -->
+        <section id="iniciar-sesion" class="seccion-formulario">
+            <div class="tarjeta-formulario">
+                <h2 class="titulo-formulario">Iniciar Sesión</h2>
+                <form class="formulario">
+                    <div class="grupo-entrada">
+                        <label class="etiqueta">Usuario:</label>
+                        <input type="text" class="campo-texto" placeholder="Ingrese su usuario">
+                    </div>
+                    <div class="grupo-entrada">
+                        <label class="etiqueta">Contraseña:</label>
+                        <input type="password" class="campo-texto" placeholder="Ingrese su contraseña">
+                    </div>
+                    <button type="button" class="boton-accion">Ingresar al Cajero</button>
+                    <p class="mensaje-alerta" id="alerta-intentos">Intentos restantes: 3</p>
+                </form>
+            </div>
+        </section>
 
+        <!-- Sección: Registro de Cliente -->
+        <section id="registro" class="seccion-formulario">
+            <div class="tarjeta-formulario">
+                <h2 class="titulo-formulario">Registro de Nuevo Cliente</h2>
+                <form class="formulario">
+                    <div class="grupo-entrada">
+                        <label class="etiqueta">Número de Identificación (Cédula/Pasaporte):</label>
+                        <input type="text" class="campo-texto" placeholder="Ej. 123456789">
+                    </div>
+                    <div class="grupo-entrada">
+                        <label class="etiqueta">Nombre Completo:</label>
+                        <input type="text" class="campo-texto" placeholder="Ej. Juan Pérez">
+                    </div>
+                    <div class="grupo-entrada">
+                        <label class="etiqueta">Número de Celular:</label>
+                        <input type="tel" class="campo-texto" placeholder="Ej. 3001234567">
+                    </div>
+                    <div class="grupo-entrada">
+                        <label class="etiqueta">Nombre de Usuario:</label>
+                        <input type="text" class="campo-texto" placeholder="Cree un usuario único">
+                    </div>
+                    <div class="grupo-entrada">
+                        <label class="etiqueta">Contraseña:</label>
+                        <input type="password" class="campo-texto" placeholder="Cree su contraseña">
+                    </div>
+                    <div class="grupo-entrada">
+                        <label class="etiqueta">Confirmar Contraseña:</label>
+                        <input type="password" class="campo-texto" placeholder="Repita su contraseña">
+                    </div>
+                    <button type="button" class="boton-accion">Completar Registro</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Sección: Panel de Transacciones (Cajero) -->
+        <section id="panel-cajero" class="seccion-panel">
+            <h2 class="titulo-panel">Panel de Transacciones</h2>
+            <div class="cuadricula-operaciones">
+                <button class="tarjeta-operacion">
+                    <span class="icono">💰</span>
+                    Consultar Saldo
+                </button>
+                <button class="tarjeta-operacion">
+                    <span class="icono">📥</span>
+                    Consignar Dinero
+                </button>
+                <button class="tarjeta-operacion">
+                    <span class="icono">📤</span>
+                    Retirar Dinero
+                </button>
+                <button class="tarjeta-operacion">
+                    <span class="icono">🔄</span>
+                    Transferir
+                </button>
+                <button class="tarjeta-operacion">
+                    <span class="icono">📋</span>
+                    Ver Movimientos
+                </button>
+                <button class="tarjeta-operacion">
+                    <span class="icono">👤</span>
+                    Perfil
+                </button>
+                <button class="tarjeta-operacion salir">
+                    <span class="icono">🚪</span>
+                    Cerrar Sesión
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Pie de Página -->
+    <footer class="pie-pagina">
+        <div class="informacion-corporativa">
+            <p>&copy; 2026 Mi Plata Financial Bank. Todos los derechos reservados.</p>
+        </div>
+        <div class="redes-sociales">
+            <a href="#" class="enlace-red">Ayuda</a>
+            <a href="#" class="enlace-red">Términos Legales</a>
+            <a href="#" class="enlace-red">Contacto</a>
+        </div>
+    </footer>
 </body>
 </html>

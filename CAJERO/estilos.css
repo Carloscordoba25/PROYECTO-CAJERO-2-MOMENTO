@@ -1,0 +1,278 @@
+
+/* Variables de Identidad Corporativa Bancaria */
+:root {
+    --azul-primario: #0a2540;
+    --azul-secundario: #113f67;
+    --acento-celeste: #00d2ff;
+    --gris-fondo: #f4f7f6;
+    --texto-oscuro: #2c3e50;
+    --texto-claro: #ffffff;
+    --blanco: #ffffff;
+    --rojo-alerta: #e74c3c;
+    --borde-suave: #dcdde1;
+}
+
+/* Reseteo Básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--gris-fondo);
+    color: var(--texto-oscuro);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Encabezado */
+.encabezado-bancario {
+    background-color: var(--azul-primario);
+    color: var(--texto-claro);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 5%;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.logo-texto {
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.logo-subtexto {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--acento-celeste);
+}
+
+.navegacion-principal {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.enlace-nav {
+    color: var(--texto-claro);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.enlace-nav:hover {
+    color: var(--acento-celeste);
+}
+
+.boton-destacado {
+    background-color: var(--acento-celeste);
+    color: var(--azul-primario);
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.boton-destacado:hover {
+    background-color: #00b8e6;
+    color: var(--texto-claro);
+}
+
+/* Contenedor Principal */
+.contenido-principal {
+    flex: 1;
+    padding: 3rem 5%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* Tarjetas Generales (Inicio y Formularios) */
+.tarjeta-presentacion,
+.tarjeta-formulario {
+    background-color: var(--blanco);
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    border-top: 4px solid var(--azul-secundario);
+}
+
+/* Textos */
+.titulo-bienvenida, .titulo-formulario, .titulo-panel {
+    color: var(--azul-primario);
+    margin-bottom: 1rem;
+}
+
+.texto-descripcion {
+    color: #7f8c8d;
+    line-height: 1.5;
+}
+
+/* Formularios */
+.formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    text-align: left;
+    margin-top: 1.5rem;
+}
+
+.grupo-entrada {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.etiqueta {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--azul-secundario);
+}
+
+.campo-texto {
+    padding: 0.8rem;
+    border: 1px solid var(--borde-suave);
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.campo-texto:focus {
+    outline: none;
+    border-color: var(--acento-celeste);
+}
+
+.boton-accion {
+    background-color: var(--azul-primario);
+    color: var(--texto-claro);
+    padding: 1rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 1rem;
+}
+
+.boton-accion:hover {
+    background-color: var(--azul-secundario);
+}
+
+.mensaje-alerta {
+    color: var(--rojo-alerta);
+    font-size: 0.85rem;
+    text-align: center;
+    margin-top: 0.5rem;
+    font-weight: 600;
+}
+
+/* Panel de Transacciones (Cajero) */
+.seccion-panel {
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
+}
+
+.cuadricula-operaciones {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.tarjeta-operacion {
+    background-color: var(--blanco);
+    border: 2px solid var(--borde-suave);
+    border-radius: 8px;
+    padding: 2rem 1rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--azul-primario);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.tarjeta-operacion .icono {
+    font-size: 2.5rem;
+}
+
+.tarjeta-operacion:hover {
+    border-color: var(--azul-secundario);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+.tarjeta-operacion.salir {
+    border-color: var(--rojo-alerta);
+    color: var(--rojo-alerta);
+}
+
+.tarjeta-operacion.salir:hover {
+    background-color: var(--rojo-alerta);
+    color: var(--texto-claro);
+}
+
+/* Pie de Página */
+.pie-pagina {
+    background-color: var(--azul-primario);
+    color: var(--texto-claro);
+    text-align: center;
+    padding: 2rem 5%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.enlace-red {
+    color: var(--acento-celeste);
+    text-decoration: none;
+    margin: 0 10px;
+    font-size: 0.9rem;
+}
+
+.enlace-red:hover {
+    text-decoration: underline;
+}
+
+/* Utilidad para simular vistas desde JS más adelante */
+section {
+    display: none;
+}
+
+section:target, section.activa {
+    display: block;
+    animation: aparecer 0.5s ease;
+}
+
+@keyframes aparecer {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Diseño Responsivo (Móviles) */
+@media (max-width: 768px) {
+    .encabezado-bancario {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .navegacion-principal {
+        width: 100%;
+        justify-content: space-around;
+    }
+    
+    .tarjeta-presentacion, .tarjeta-formulario {
+        padding: 2rem 1rem;
+    }
+}

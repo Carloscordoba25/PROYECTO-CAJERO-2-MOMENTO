@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Panel de transacciones de Mi Plata Financial Bank.">
+    <title>Panel de transacciones | Mi Plata Financial Bank</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <header class="encabezado-bancario">
+        <a class="enlace-inicio" href="index.html" aria-label="Volver a la página principal de Mi Plata Financial Bank">
+            <span class="logo-texto">MI PLATA</span>
+            <span class="logo-subtexto">FINANCIAL BANK</span>
+        </a>
+        <nav class="navegacion-principal" aria-label="Navegación principal">
+            <a href="index.html" class="enlace-nav">Inicio</a>
+            <a href="tarjetas.html" class="enlace-nav">Tarjetas</a>
+            <a href="iniciar-sesion.html" class="enlace-nav">Cerrar sesión</a>
+        </nav>
+    </header>
+
+    <main class="contenido-principal">
+        <section id="panel-transacciones" class="seccion-panel seccion-transacciones">
+            <div class="encabezado-panel">
+                <p class="texto-sobrelinea">Sucursal virtual</p>
+                <h1 class="titulo-panel">Panel de transacciones</h1>
+                <p class="texto-descripcion">Selecciona una opción para consultar tus productos, registrar operaciones o administrar tu perfil.</p>
+            </div>
+
+            <div class="resumen-cuenta">
+                <div class="grupo-entrada">
+                    <label class="etiqueta" for="cuenta-seleccionada">Cuenta seleccionada</label>
+                    <select class="campo-texto" id="cuenta-seleccionada" name="cuenta-seleccionada">
+                        <option>Cuenta de Ahorros</option>
+                        <option>Cuenta Corriente</option>
+                    </select>
+                </div>
+                <div class="saldo-cuenta">
+                    <span class="etiqueta">Saldo actual</span>
+                    <strong class="valor-saldo">Saldo no disponible</strong>
+                    <span class="nota-cuenta">El saldo real se muestra al conectar el servicio bancario.</span>
+                </div>
+            </div>
+
+            <nav class="cuadricula-operaciones" aria-label="Operaciones bancarias">
+                <a class="tarjeta-operacion" href="#consultar-saldo"><span class="icono" aria-hidden="true">◉</span>Consultar saldo</a>
+                <a class="tarjeta-operacion" href="#consignar-dinero"><span class="icono" aria-hidden="true">＋</span>Consignar dinero</a>
+                <a class="tarjeta-operacion" href="#retirar-dinero"><span class="icono" aria-hidden="true">−</span>Retirar dinero</a>
+                <a class="tarjeta-operacion" href="#ver-movimientos"><span class="icono" aria-hidden="true">≡</span>Ver movimientos</a>
+                <a class="tarjeta-operacion" href="#transferir-dinero"><span class="icono" aria-hidden="true">⇄</span>Transferir</a>
+                <a class="tarjeta-operacion" href="#editar-perfil"><span class="icono" aria-hidden="true">◎</span>Perfil</a>
+                <a class="tarjeta-operacion salir" href="iniciar-sesion.html"><span class="icono" aria-hidden="true">↪</span>Cerrar sesión</a>
+            </nav>
+
+            <p class="aviso-prototipo">Prototipo de interfaz: las operaciones y cambios de perfil requieren autenticación y conexión a un servicio bancario; esta página no ejecuta ni guarda transacciones.</p>
+
+            <section id="consultar-saldo" class="seccion-operacion">
+                <h2 class="titulo-operacion">Consultar saldo</h2>
+                <p class="texto-descripcion">Selecciona una cuenta para consultar su saldo actual al conectar el servicio bancario.</p>
+            </section>
+
+            <section id="consignar-dinero" class="seccion-operacion">
+                <h2 class="titulo-operacion">Consignar dinero</h2>
+                <form class="formulario formulario-operacion">
+                    <div class="grupo-entrada">
+                        <label class="etiqueta" for="monto-consignacion">Monto a consignar</label>
+                        <input class="campo-texto" id="monto-consignacion" name="monto-consignacion" type="number" min="0.01" step="0.01" placeholder="0.00" required>
+                    </div>
+                    <button class="boton-accion" type="button">Continuar consignación</button>
+                    <p class="nota-cuenta">El monto debe ser un número positivo mayor a cero. El saldo se actualizará tras confirmar la operación en el servicio bancario.</p>
+                </form>
+            </section>
+
+            <section id="retirar-dinero" class="seccion-operacion">
+                <h2 class="titulo-operacion">Retirar dinero</h2>
+                <form class="formulario formulario-operacion">
+                    <div class="grupo-entrada">
+                        <label class="etiqueta" for="monto-retiro">Monto a retirar</label>
+                        <input class="campo-texto" id="monto-retiro" name="monto-retiro" type="number" min="0.01" step="0.01" placeholder="0.00" required>
+                    </div>
+                    <button class="boton-accion" type="button">Continuar retiro</button>
+                    <ul class="lista-beneficios">
+                        <li>Cuenta de Ahorros: el retiro no puede superar el saldo disponible y se aplica el interés mensual del 1.5% al retirar.</li>
+                        <li>Cuenta Corriente: se permite retirar hasta el saldo actual más un 20% de sobregiro.</li>
+                    </ul>
+                </form>
+            </section>
+
+            <section id="ver-movimientos" class="seccion-operacion">
+                <h2 class="titulo-operacion">Movimientos recientes</h2>
+                <div class="contenedor-tabla">
+                    <table class="tabla-movimientos">
+                        <thead>
+                            <tr>
+                                <th scope="col">Fecha y hora</th>
+                                <th scope="col">Tipo de transacción</th>
+                                <th scope="col">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="3">No hay movimientos registrados para mostrar.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="nota-cuenta">El historial conectado se presenta ordenado por fecha, desde el movimiento más reciente.</p>
+            </section>
+
+            <section id="transferir-dinero" class="seccion-operacion">
+                <h2 class="titulo-operacion">Transferir dinero</h2>
+                <form class="formulario formulario-operacion">
+                    <div class="grupo-entrada">
+                        <label class="etiqueta" for="cuenta-origen">Cuenta de origen</label>
+                        <select class="campo-texto" id="cuenta-origen" name="cuenta-origen">
+                            <option>Cuenta de Ahorros</option>
+                            <option>Cuenta Corriente</option>
+                        </select>
+                    </div>
+                    <div class="grupo-entrada">
+                        <label class="etiqueta" for="tipo-destino">Destino de la transferencia</label>
+                        <select class="campo-texto" id="tipo-destino" name="tipo-destino">
+                            <option>Otro producto propio</option>
+                            <option>Cuenta de otro usuario</option>
+                        </select>
+                    </div>
+                    <div class="grupo-entrada">
+                        <label class="etiqueta" for="cuenta-destino">Producto de destino</label>
+                        <select class="campo-texto" id="cuenta-destino" name="cuenta-destino">
+                            <option>Cuenta Corriente</option>
+                            <option>Cuenta de Ahorros</option>
+                        </select>
+                    </div>
+                    <div class="grupo-entrada">
+                        <label class="etiqueta" for="identificacion-destino">Identificación del destinatario (si aplica)</label>
+                        <input class="campo-texto" id="identificacion-destino" name="identificacion-destino" type="text" placeholder="Cédula o pasaporte">
+                    </div>
+                    <div class="grupo-entrada">
+                        <label class="etiqueta" for="monto-transferencia">Monto a transferir</label>
+                        <input class="campo-texto" id="monto-transferencia" name="monto-transferencia" type="number" min="0.01" step="0.01" placeholder="0.00" required>
+                    </div>
+                    <button class="boton-accion" type="button">Continuar transferencia</button>
+                    <p class="nota-cuenta">No se permiten transferencias al mismo producto. La validación de destino y el envío requieren el servicio bancario.</p>
+                </form>
+            </section>
+
+            <section id="editar-perfil" class="seccion-operacion">
+                <h2 class="titulo-operacion">Perfil y seguridad</h2>
+                <details class="desplegable-beneficios">
+                    <summary class="titulo-desplegable">Editar datos del perfil</summary>
+                    <form class="formulario formulario-operacion">
+                        <div class="grupo-entrada">
+                            <label class="etiqueta" for="perfil-identificacion">Número de identificación</label>
+                            <input class="campo-texto" id="perfil-identificacion" name="perfil-identificacion" type="text" autocomplete="off">
+                        </div>
+                        <div class="grupo-entrada">
+                            <label class="etiqueta" for="perfil-nombre">Nombre completo</label>
+                            <input class="campo-texto" id="perfil-nombre" name="perfil-nombre" type="text" autocomplete="name">
+                        </div>
+                        <div class="grupo-entrada">
+                            <label class="etiqueta" for="perfil-celular">Número de celular</label>
+                            <input class="campo-texto" id="perfil-celular" name="perfil-celular" type="tel" autocomplete="tel">
+                        </div>
+                        <div class="grupo-entrada">
+                            <label class="etiqueta" for="perfil-usuario">Nombre de usuario</label>
+                            <input class="campo-texto" id="perfil-usuario" name="perfil-usuario" type="text" autocomplete="username">
+                        </div>
+                        <button class="boton-accion" type="button">Guardar cambios</button>
+                    </form>
+                </details>
+                <details class="desplegable-beneficios">
+                    <summary class="titulo-desplegable">Cambiar contraseña</summary>
+                    <form class="formulario formulario-operacion">
+                        <div class="grupo-entrada">
+                            <label class="etiqueta" for="usuario-seguridad">Usuario</label>
+                            <input class="campo-texto" id="usuario-seguridad" name="usuario-seguridad" type="text" autocomplete="username" required>
+                        </div>
+                        <div class="grupo-entrada">
+                            <label class="etiqueta" for="clave-actual">Contraseña actual</label>
+                            <input class="campo-texto" id="clave-actual" name="clave-actual" type="password" autocomplete="current-password" required>
+                        </div>
+                        <div class="grupo-entrada">
+                            <label class="etiqueta" for="clave-nueva">Nueva contraseña</label>
+                            <input class="campo-texto" id="clave-nueva" name="clave-nueva" type="password" autocomplete="new-password" required>
+                        </div>
+                        <div class="grupo-entrada">
+                            <label class="etiqueta" for="clave-confirmacion">Confirmar nueva contraseña</label>
+                            <input class="campo-texto" id="clave-confirmacion" name="clave-confirmacion" type="password" autocomplete="new-password" required>
+                        </div>
+                        <button class="boton-accion" type="button">Guardar nueva contraseña</button>
+                    </form>
+                </details>
+            </section>
+        </section>
+    </main>
+
+    <footer class="pie-pagina">
+        <div class="informacion-corporativa">
+            <a class="enlace-inicio enlace-pie" href="index.html">MI PLATA FINANCIAL BANK</a>
+            <p>&copy; 2026 Mi Plata Financial Bank. Todos los derechos reservados.</p>
+        </div>
+        <nav id="redes-sociales" class="redes-sociales" aria-label="Redes sociales">
+            <a class="enlace-red" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">Facebook</a>
+            <a class="enlace-red" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a class="enlace-red" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </nav>
+    </footer>
+</body>
+</html>

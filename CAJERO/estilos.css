@@ -45,6 +45,13 @@ body {
     letter-spacing: 1px;
 }
 
+.enlace-inicio {
+    display: inline-flex;
+    flex-direction: column;
+    color: inherit;
+    text-decoration: none;
+}
+
 .logo-subtexto {
     font-size: 0.9rem;
     font-weight: 300;
@@ -86,8 +93,221 @@ body {
     flex: 1;
     padding: 3rem 5%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    gap: 3rem;
+}
+
+.seccion-inicio {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    align-items: center;
+    gap: 3rem;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.presentacion-institucional,
+.bloque-informativo {
+    display: flex;
+    flex-direction: column;
     align-items: flex-start;
+    gap: 1rem;
+}
+
+.texto-sobrelinea {
+    color: var(--azul-secundario);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.titulo-bienvenida {
+    color: var(--azul-primario);
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    line-height: 1.1;
+}
+
+.acciones-inicio {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-top: 0.5rem;
+}
+
+.enlace-accion {
+    display: inline-block;
+    margin-top: 0;
+    text-decoration: none;
+}
+
+.enlace-secundario {
+    color: var(--azul-secundario);
+    font-weight: 700;
+}
+
+.enlace-secundario:hover {
+    color: var(--azul-primario);
+}
+
+.figura-tarjetas {
+    width: 100%;
+}
+
+.imagen-tarjetas {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 12px 28px rgba(10, 37, 64, 0.16);
+}
+
+.pie-imagen {
+    margin-top: 0.75rem;
+    color: #65727e;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.carrusel-tarjetas {
+    width: 100%;
+    min-width: 0;
+    text-align: center;
+}
+
+.control-carrusel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+.marco-carrusel {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.pista-carrusel {
+    display: flex;
+    width: 300%;
+    transition: transform 0.55s cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.diapositiva-carrusel {
+    position: relative;
+    flex: 0 0 33.333333%;
+    min-width: 0;
+    padding: 0.5rem;
+    background: linear-gradient(145deg, #ffffff, #edf3f7);
+}
+
+.imagen-tarjetas {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 12px 28px rgba(10, 37, 64, 0.16);
+}
+
+.controles-diapositiva {
+    position: absolute;
+    top: 43%;
+    left: 1rem;
+    right: 1rem;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.boton-carrusel {
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 50%;
+    background: rgba(10, 37, 64, 0.88);
+    color: var(--texto-claro);
+    cursor: pointer;
+    font-size: 1.5rem;
+    line-height: 1;
+    pointer-events: auto;
+    transition: background-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+
+.boton-carrusel:hover {
+    transform: scale(1.08);
+    background: var(--azul-secundario);
+    box-shadow: 0 0 18px rgba(0, 210, 255, 0.4);
+}
+
+.indicadores-carrusel {
+    display: flex;
+    justify-content: center;
+    gap: 0.65rem;
+    margin: 1rem 0;
+}
+
+.indicador-carrusel {
+    width: 0.7rem;
+    height: 0.7rem;
+    border: 1px solid var(--azul-secundario);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+
+#tarjeta-uno:checked ~ .indicadores-carrusel .indicador-carrusel:nth-child(1),
+#tarjeta-dos:checked ~ .indicadores-carrusel .indicador-carrusel:nth-child(2),
+#tarjeta-tres:checked ~ .indicadores-carrusel .indicador-carrusel:nth-child(3) {
+    transform: scale(1.15);
+    background: var(--acento-celeste);
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.55);
+}
+
+#tarjeta-uno:focus-visible ~ .indicadores-carrusel .indicador-carrusel:nth-child(1),
+#tarjeta-dos:focus-visible ~ .indicadores-carrusel .indicador-carrusel:nth-child(2),
+#tarjeta-tres:focus-visible ~ .indicadores-carrusel .indicador-carrusel:nth-child(3) {
+    outline: 3px solid var(--acento-celeste);
+    outline-offset: 4px;
+}
+
+#tarjeta-uno:checked ~ .marco-carrusel .pista-carrusel {
+    transform: translateX(0);
+}
+
+#tarjeta-dos:checked ~ .marco-carrusel .pista-carrusel {
+    transform: translateX(-33.333333%);
+}
+
+#tarjeta-tres:checked ~ .marco-carrusel .pista-carrusel {
+    transform: translateX(-66.666667%);
+}
+
+.seccion-informativa {
+    width: 100%;
+    max-width: 1200px;
+    padding: 2.5rem;
+    background-color: var(--blanco);
+    border-left: 5px solid var(--acento-celeste);
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.bloque-informativo {
+    max-width: 850px;
+}
+
+.titulo-seccion {
+    color: var(--azul-primario);
+    font-size: clamp(1.6rem, 3vw, 2.3rem);
 }
 
 /* Tarjetas Generales (Inicio y Formularios) */
@@ -103,6 +323,15 @@ body {
     border-top: 4px solid var(--azul-secundario);
 }
 
+.contenido-formulario {
+    align-items: center;
+}
+
+.seccion-formulario {
+    width: 100%;
+    max-width: 500px;
+}
+
 /* Textos */
 .titulo-bienvenida, .titulo-formulario, .titulo-panel {
     color: var(--azul-primario);
@@ -112,6 +341,15 @@ body {
 .texto-descripcion {
     color: #7f8c8d;
     line-height: 1.5;
+}
+
+.texto-enlace-formulario {
+    margin: 1.5rem 0 1rem;
+}
+
+.texto-enlace-formulario a {
+    color: var(--azul-secundario);
+    font-weight: 700;
 }
 
 /* Formularios */
@@ -149,6 +387,8 @@ body {
 }
 
 .boton-accion {
+    position: relative;
+    overflow: hidden;
     background-color: var(--azul-primario);
     color: var(--texto-claro);
     padding: 1rem;
@@ -157,12 +397,39 @@ body {
     font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.25s, box-shadow 0.25s;
     margin-top: 1rem;
 }
 
+.boton-accion::after {
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 70%;
+    height: 100%;
+    background: linear-gradient(100deg, transparent, rgba(0, 210, 255, 0.3), transparent);
+    content: "";
+    transition: left 0.55s ease;
+}
+
 .boton-accion:hover {
+    transform: translateY(-2px);
     background-color: var(--azul-secundario);
+    box-shadow: 0 8px 20px rgba(0, 210, 255, 0.2);
+}
+
+.boton-accion:hover::after {
+    left: 140%;
+}
+
+.boton-accion:focus-visible,
+.enlace-nav:focus-visible,
+.enlace-secundario:focus-visible,
+.boton-carrusel:focus-visible,
+.indicador-carrusel:focus-visible,
+.tarjeta-operacion:focus-visible {
+    outline: 3px solid var(--acento-celeste);
+    outline-offset: 3px;
 }
 
 .mensaje-alerta {
@@ -201,6 +468,7 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    text-decoration: none;
 }
 
 .tarjeta-operacion .icono {
@@ -223,6 +491,222 @@ body {
     color: var(--texto-claro);
 }
 
+.seccion-productos {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.encabezado-productos {
+    max-width: 760px;
+    margin: 0 auto 2rem;
+    text-align: center;
+}
+
+.cuadricula-productos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 1.5rem;
+}
+
+.tarjeta-producto {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--borde-suave);
+    border-radius: 12px;
+    background: var(--blanco);
+    box-shadow: 0 10px 24px rgba(10, 37, 64, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tarjeta-producto:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 32px rgba(10, 37, 64, 0.15);
+}
+
+.imagen-producto {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: contain;
+    background: #f0ede6;
+}
+
+.contenido-producto {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+    padding: 1.4rem;
+}
+
+.etiqueta-producto {
+    color: var(--azul-secundario);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.titulo-producto,
+.titulo-operacion {
+    color: var(--azul-primario);
+}
+
+.desplegable-beneficios {
+    width: 100%;
+    border-top: 1px solid var(--borde-suave);
+    border-bottom: 1px solid var(--borde-suave);
+}
+
+.titulo-desplegable {
+    position: relative;
+    padding: 1rem 2rem 1rem 0;
+    color: var(--azul-secundario);
+    cursor: pointer;
+    font-weight: 700;
+    list-style: none;
+}
+
+.titulo-desplegable::-webkit-details-marker {
+    display: none;
+}
+
+.titulo-desplegable::after {
+    position: absolute;
+    top: 50%;
+    right: 0.2rem;
+    color: var(--acento-celeste);
+    content: "+";
+    font-size: 1.4rem;
+    transform: translateY(-50%);
+}
+
+.desplegable-beneficios[open] > .titulo-desplegable::after {
+    content: "−";
+}
+
+.lista-beneficios {
+    display: grid;
+    gap: 0.7rem;
+    padding: 0 0 1rem 1.2rem;
+    color: var(--texto-oscuro);
+    line-height: 1.5;
+    text-align: left;
+}
+
+.boton-producto {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: auto;
+    text-align: center;
+    text-decoration: none;
+}
+
+.nota-productos {
+    margin-top: 1.5rem;
+    color: #65727e;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.seccion-transacciones {
+    max-width: 1100px;
+    text-align: left;
+}
+
+.encabezado-panel {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.resumen-cuenta {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border: 1px solid var(--borde-suave);
+    border-radius: 10px;
+    background: var(--blanco);
+}
+
+.saldo-cuenta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.valor-saldo {
+    color: var(--azul-primario);
+    font-size: 1.5rem;
+}
+
+.nota-cuenta,
+.aviso-prototipo {
+    color: #65727e;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.aviso-prototipo {
+    margin-top: 1.5rem;
+    padding: 1rem 1.2rem;
+    border-left: 4px solid var(--acento-celeste);
+    border-radius: 4px;
+    background: #eaf7fb;
+}
+
+.seccion-operacion {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    border: 1px solid var(--borde-suave);
+    border-radius: 10px;
+    background: var(--blanco);
+    scroll-margin-top: 1rem;
+}
+
+.titulo-operacion {
+    margin-bottom: 0.75rem;
+}
+
+.formulario-operacion {
+    max-width: 680px;
+}
+
+.contenedor-tabla {
+    overflow-x: auto;
+}
+
+.tabla-movimientos {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.tabla-movimientos th,
+.tabla-movimientos td {
+    padding: 0.85rem;
+    border-bottom: 1px solid var(--borde-suave);
+}
+
+.tabla-movimientos th {
+    color: var(--azul-secundario);
+}
+
+.seccion-operacion > .desplegable-beneficios {
+    margin-top: 1rem;
+}
+
+.seccion-operacion > .desplegable-beneficios .formulario {
+    padding-bottom: 1rem;
+}
+
 /* Pie de Página */
 .pie-pagina {
     background-color: var(--azul-primario);
@@ -234,10 +718,34 @@ body {
     gap: 1rem;
 }
 
+.informacion-corporativa {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.enlace-pie {
+    align-self: center;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+}
+
+.informacion-corporativa a:not(.enlace-pie) {
+    color: var(--acento-celeste);
+}
+
+.enlaces-pie,
+.redes-sociales {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
 .enlace-red {
     color: var(--acento-celeste);
     text-decoration: none;
-    margin: 0 10px;
+    margin: 0 5px;
     font-size: 0.9rem;
 }
 
@@ -245,14 +753,9 @@ body {
     text-decoration: underline;
 }
 
-/* Utilidad para simular vistas desde JS más adelante */
-section {
-    display: none;
-}
-
-section:target, section.activa {
-    display: block;
-    animation: aparecer 0.5s ease;
+.texto-legal {
+    color: #d5e2ed;
+    font-size: 0.8rem;
 }
 
 @keyframes aparecer {
@@ -271,8 +774,41 @@ section:target, section.activa {
         width: 100%;
         justify-content: space-around;
     }
+
+    .seccion-inicio {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .presentacion-institucional {
+        text-align: center;
+        align-items: center;
+    }
+
+    .seccion-informativa {
+        padding: 1.5rem;
+    }
+
+    .cuadricula-productos {
+        grid-template-columns: 1fr;
+    }
+
+    .resumen-cuenta {
+        grid-template-columns: 1fr;
+    }
     
     .tarjeta-presentacion, .tarjeta-formulario {
         padding: 2rem 1rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
     }
 }

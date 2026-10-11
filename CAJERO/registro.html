@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro | Mi Plata Financial Bank</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <header class="encabezado-bancario">
+        <a class="enlace-inicio" href="index.html" aria-label="Volver a la página principal de Mi Plata Financial Bank">
+            <span class="logo-texto">MI PLATA</span>
+            <span class="logo-subtexto">FINANCIAL BANK</span>
+        </a>
+        <nav class="navegacion-principal" aria-label="Navegación principal">
+            <a href="index.html#inicio" class="enlace-nav">Página principal</a>
+            <a href="iniciar-sesion.html" class="enlace-nav">Iniciar sesión</a>
+        </nav>
+    </header>
+
+    <main class="contenido-principal contenido-formulario">
+        <section id="registro-cliente" class="seccion-formulario">
+            <div class="tarjeta-formulario">
+                <h1 class="titulo-formulario">Registro de nuevo cliente</h1>
+                <p class="texto-descripcion">Completa tus datos para crear tu cuenta.</p>
+                <form class="formulario">
+                    <div class="grupo-entrada">
+                        <label class="etiqueta" for="identificacion">Número de identificación</label>
+                        <input id="identificacion" name="identificacion" type="text" class="campo-texto" placeholder="Cédula o pasaporte" autocomplete="off" required>
+                    </div>
+                    <div class="grupo-entrada">
+                        <label class="etiqueta" for="nombre-completo">Nombre completo</label>
+                        <input id="nombre-completo" name="nombre-completo" type="text" class="campo-texto" placeholder="Ej. Juan Pérez" autocomplete="name" required>
+                    </div>
+                    <div class="grupo-entrada">
+                        <label class="etiqueta" for="celular">Número de celular</label>
+                        <input id="celular" name="celular" type="tel" class="campo-texto" placeholder="Ej. 3001234567" autocomplete="tel" required>
+                    </div>
+                    <div class="grupo-entrada">
+                        <label class="etiqueta" for="nuevo-usuario">Nombre de usuario</label>
+                        <input id="nuevo-usuario" name="usuario" type="text" class="campo-texto" placeholder="Crea un usuario único" autocomplete="username" required>
+                    </div>
+                    <div class="grupo-entrada">
+                        <label class="etiqueta" for="nueva-contrasena">Contraseña</label>
+                        <input id="nueva-contrasena" name="contrasena" type="password" class="campo-texto" placeholder="Crea tu contraseña" autocomplete="new-password" required>
+                    </div>
+                    <div class="grupo-entrada">
+                        <label class="etiqueta" for="confirmar-contrasena">Confirmar contraseña</label>
+                        <input id="confirmar-contrasena" name="confirmar-contrasena" type="password" class="campo-texto" placeholder="Repite tu contraseña" autocomplete="new-password" required>
+                    </div>
+                    <button type="button" class="boton-accion">Completar registro</button>
+                </form>
+                <p class="texto-enlace-formulario">¿Ya tienes una cuenta? <a href="iniciar-sesion.html">Inicia sesión</a></p>
+                <a class="enlace-secundario" href="index.html">Volver a la página principal</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="pie-pagina">
+        <div class="informacion-corporativa">
+            <a class="enlace-inicio enlace-pie" href="index.html">MI PLATA FINANCIAL BANK</a>
+            <p>&copy; 2026 Mi Plata Financial Bank. Todos los derechos reservados.</p>
+        </div>
+        <nav id="redes-sociales" class="redes-sociales" aria-label="Redes sociales">
+            <a class="enlace-red" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">Facebook</a>
+            <a class="enlace-red" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a class="enlace-red" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </nav>
+    </footer>
+</body>
+</html>

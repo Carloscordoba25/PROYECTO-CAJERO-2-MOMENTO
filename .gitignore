@@ -1,0 +1,11 @@
+# Sistema operativo
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Dependencias (si algún día usas Node/npm)
+node_modules/
+
+# Archivos temporales y de log
+*.log
+*.tmp

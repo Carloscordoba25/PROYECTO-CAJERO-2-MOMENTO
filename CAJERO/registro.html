@@ -33,12 +33,16 @@
                         <input id="nombre-completo" name="nombre-completo" type="text" class="campo-texto" placeholder="Ej. Juan Pérez" autocomplete="name" required>
                     </div>
                     <div class="grupo-entrada">
-                        <label class="etiqueta" for="celular">Número de celular</label>
-                        <input id="celular" name="celular" type="tel" class="campo-texto" placeholder="Ej. 3001234567" autocomplete="tel" required>
+                        <label class="etiqueta" for="correo">Correo Electronico</label>
+                        <input id="correo" name="correo" type="mail" class="campo-texto" placeholder="Ej. fulanito@cesde.net" autocomplete="tel" required>
                     </div>
                     <div class="grupo-entrada">
                         <label class="etiqueta" for="nuevo-usuario">Nombre de usuario</label>
                         <input id="nuevo-usuario" name="usuario" type="text" class="campo-texto" placeholder="Crea un usuario único" autocomplete="username" required>
+                    </div>
+                    <div class="grupo-entrada">
+                        <label class="etiqueta" for="monto">Monto inicial de la cuenta</label>
+                        <input id="monto" name="monto" type="number" class="campo-texto" placeholder="Ingrese monto Ej: 10000" required>
                     </div>
                     <div class="grupo-entrada">
                         <label class="etiqueta" for="nueva-contrasena">Contraseña</label>
@@ -48,7 +52,7 @@
                         <label class="etiqueta" for="confirmar-contrasena">Confirmar contraseña</label>
                         <input id="confirmar-contrasena" name="confirmar-contrasena" type="password" class="campo-texto" placeholder="Repite tu contraseña" autocomplete="new-password" required>
                     </div>
-                    <button type="button" class="boton-accion">Completar registro</button>
+                    <button type="submit" class="boton-accion" id="boton-registro">Registrarse</button>
                 </form>
                 <p class="texto-enlace-formulario">¿Ya tienes una cuenta? <a href="iniciar-sesion.html">Inicia sesión</a></p>
                 <a class="enlace-secundario" href="index.html">Volver a la página principal</a>
@@ -67,5 +71,7 @@
             <a class="enlace-red" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </nav>
     </footer>
+
+    <script src="registro.js"></script>
 </body>
 </html>

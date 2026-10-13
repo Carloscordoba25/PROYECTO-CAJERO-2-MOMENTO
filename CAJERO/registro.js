@@ -55,4 +55,3 @@ function register(event) {
         alert('Las contraseñas no son iguales');
     }
 }
-

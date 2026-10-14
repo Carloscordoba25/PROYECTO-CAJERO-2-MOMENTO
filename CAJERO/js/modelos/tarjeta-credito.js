@@ -16,6 +16,29 @@ export class TarjetaCredito{
         this.#clienteIdentificacion = clienteIdentificacion;
     }
 
+    /* ------------ Accesores: la única puerta hacia los campos ------------- */
+
+    get numero() {
+        return this.#numero;
+    }
+
+    get cupo() {
+        return this.#cupo;
+    }
+
+    // La deuda se lee siempre; el setter existe para que la persistencia
+    // pueda RESTAURAR una deuda ya guardada al reconstruir la tarjeta.
+    get deuda() {
+        return this.#deuda;
+    }
+    set deuda(valor) {
+        this.#deuda = valor;
+    }
+
+    get clienteIdentificacion() {
+        return this.#clienteIdentificacion;
+    }
+
     cupoDisponible() {
         const cupoTotal = this.#cupo;
         const deudaActual = this.#deuda;

@@ -1,18 +1,18 @@
-import { leerUsuarios, leerCuentas, guardarUsuarios, guardarCuentas, leerTarjetas, guardarTarjetas} from "./persistencia.js";
-import { Cliente } from "./modelos/cliente.js";
-import { CuentaAhorros } from "./modelos/cuenta-ahorros.js";
-import { CuentaCorriente } from "./modelos/cuenta-corriente.js";
-import { TarjetaCredito } from "./modelos/tarjeta-credito.js";
+import { leerUsuarios, guardarUsuarios, leerCuentas, guardarCuentas, leerTarjetas, guardarTarjetas, aumentarIntentos, reiniciarIntentos, guardarSesion } from "../config/persistencia.js";
+import { Cliente } from "../models/cliente.js";
+import { CuentaAhorros } from "../models/cuenta-ahorros.js";
+import { CuentaCorriente } from "../models/cuenta-corriente.js";
+import { TarjetaCredito } from "../models/tarjeta-credito.js";
 
-export function registrarCliente(identificacion, nombre, celular, usuario, contrasena, confirmarContrasena) {
+export function registrarCliente(identificacion, nombre, celular, correo, usuario, contrasena, confirmarContrasena) {
     
-    if(!identificacion || !nombre || !celular || !usuario || !contrasena || !confirmarContrasena) {
+    if(!identificacion || !nombre || !celular || !correo || !usuario || !contrasena || !confirmarContrasena) {
         return {
             "exito" : false,
             "mensaje" : "No pueden quedar campos vacios."
         }
     }
-        
+    
     if(contrasena !== confirmarContrasena) {
         return {
             "exito" : false,
@@ -30,7 +30,7 @@ export function registrarCliente(identificacion, nombre, celular, usuario, contr
         }
     }
 
-    const nuevoCliente = new Cliente(identificacion, nombre, celular, usuario, contrasena, "activo");
+    const nuevoCliente = new Cliente(identificacion, nombre, celular, correo, usuario, contrasena, "activo");
     const nuevaCuentaAhorros = new CuentaAhorros("AH-" + identificacion, 0, identificacion);
     const nuevaCuentaCorriente = new CuentaCorriente("CT-" + identificacion, 0, identificacion);
     const nuevaTarjetaCredito = new TarjetaCredito("TC-" + identificacion, 2000000, identificacion);
@@ -58,11 +58,57 @@ export function registrarCliente(identificacion, nombre, celular, usuario, contr
     }
 }
 
+export function iniciarSesion(usuario, contrasena) {
+    const usuariosActuales = leerUsuarios();
+
+    const indice = usuariosActuales.findIndex(u => u.usuario === usuario);
+    if(indice === -1) {
+        return {
+            "exito" : false,
+            "mensaje" : "El usuario no ha sido encontrado."
+        }
+    }
+
+    const cliente = clienteDesdeDatos(usuariosActuales[indice]);
+
+    if(cliente.estaBloqueado()) {
+        return {
+            "exito" : false,
+            "mensaje" : "La cuenta del usuario " + usuario + " esta bloqueada."
+        }
+    }
+
+    if(cliente.contrasena !== contrasena) {
+        const intentos = aumentarIntentos(usuario);
+        if(intentos >= 3) {
+            cliente.bloquear();
+            usuariosActuales[indice] = clienteADatos(cliente);
+            guardarUsuarios(usuariosActuales);
+            return {
+                "exito" : false,
+                "mensaje" : "Cuenta bloqueada por superar 3 intentos fallidos."
+            }
+        }
+        return {
+            "exito" : false,
+            "mensaje" : "Contraseña incorrecta. Intento " + intentos + " de 3."
+        }
+    }
+
+    reiniciarIntentos(usuario);
+    guardarSesion({ "identificacion" : cliente.identificacion, "usuario" : cliente.usuario });
+    return {
+        "exito" : true,
+        "mensaje" : "Inicio de sesion exitoso"
+    }
+}
+
 function clienteADatos(cliente) {
     return {
         identificacion: cliente.identificacion,
         nombre: cliente.nombre,
         celular: cliente.celular,
+        correo: cliente.correo,
         usuario: cliente.usuario,
         contrasena: cliente.contrasena,
         estado: cliente.estado
@@ -95,6 +141,7 @@ function clienteDesdeDatos(datos) {
         datos.identificacion,
         datos.nombre,
         datos.celular,
+        datos.correo,
         datos.usuario,
         datos.contrasena,
         datos.estado

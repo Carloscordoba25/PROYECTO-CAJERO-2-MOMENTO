@@ -3,15 +3,17 @@ export class Cliente {
     #identificacion;
     #nombre;
     #celular;
+    #correo;
     #usuario;
     #contrasena;
     #estado;
 
     // estado es opcional: si no se pasa, el cliente nace "activo".
-    constructor(identificacion, nombre, celular, usuario, contrasena, estado = "activo") {
+    constructor(identificacion, nombre, celular, correo, usuario, contrasena, estado = "activo") {
         this.#identificacion = identificacion;
         this.#nombre = nombre;
         this.#celular = celular;
+        this.#correo = correo;
         this.#usuario = usuario;
         this.#contrasena = contrasena;
         this.#estado = estado;
@@ -47,6 +49,13 @@ export class Cliente {
     }
     set celular(valor) {
         this.#celular = valor;
+    }
+
+    get correo() {
+        return this.#correo;
+    }
+    set correo(valor) {
+        this.#correo = valor;
     }
 
     get contrasena() {

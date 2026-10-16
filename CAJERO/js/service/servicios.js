@@ -4,8 +4,8 @@ import { CuentaAhorros } from "../models/cuenta-ahorros.js";
 import { CuentaCorriente } from "../models/cuenta-corriente.js";
 import { TarjetaCredito } from "../models/tarjeta-credito.js";
 
-export function registrarCliente(identificacion, nombre, celular, correo, usuario, contrasena, confirmarContrasena) {
-    
+//Registro de cliente
+export function registrarCliente(identificacion, nombre, celular, correo, usuario, contrasena, confirmarContrasena) {    
     if(!identificacion || !nombre || !celular || !correo || !usuario || !contrasena || !confirmarContrasena) {
         return {
             "exito" : false,
@@ -58,6 +58,7 @@ export function registrarCliente(identificacion, nombre, celular, correo, usuari
     }
 }
 
+//Inicio de sesion
 export function iniciarSesion(usuario, contrasena) {
     const usuariosActuales = leerUsuarios();
 
@@ -101,6 +102,184 @@ export function iniciarSesion(usuario, contrasena) {
         "exito" : true,
         "mensaje" : "Inicio de sesion exitoso"
     }
+}
+
+//consultar cliente
+export function consultarCliente(identificacion) {
+    const usuarios = leerUsuarios();
+    
+    const validarUsuario = usuarios.find(u => u.identificacion === identificacion);
+    if(validarUsuario === undefined) {
+        return {
+            "exito" : false,
+            "mensaje": "Usuario no encontrado"
+        };
+    }
+    
+    return {
+        "exito" : true,
+        "mensaje" : "Usuario encontrado",
+        "datos" : {
+            "identificacion" : validarUsuario.identificacion,
+            "nombre" : validarUsuario.nombre,
+            "celular" : validarUsuario.celular,
+            "correo" : validarUsuario.correo,
+            "usuario" : validarUsuario.usuario,
+            "estado" : validarUsuario.estado
+}
+    };
+}
+
+//Validar cuentas
+export function obtenerCuentas(identificacion) {
+    const usuarios = leerUsuarios();
+
+    const validarUsuario = usuarios.find(u => u.identificacion === identificacion);
+    if(validarUsuario === undefined) {
+        return {
+            "exito" : false,
+            "mensaje": "Usuario no encontrado"
+        };
+    }
+
+    const cuentas = leerCuentas().filter(c => c.clienteIdentificacion === identificacion);
+    return{
+        "exito" : true,
+        "mensaje" : "OK",
+        "cuentas" : cuentas
+    };
+}
+
+//Obtener tarjetas
+export function obtenerTarjetas(identificacion) {
+    const usuario = leerUsuarios().find(u => u.identificacion === identificacion); 
+    if (usuario === undefined) {
+        return {
+            "exito" : false,
+            "mensaje": "Usuario no encontrado"
+        }
+    };
+    
+    const tarjetas = leerTarjetas().filter(t => t.clienteIdentificacion === identificacion);
+    
+    return{
+        "exito" : true,
+        "mensaje" : "OK",
+        "tarjetas" : tarjetas 
+    };
+}
+
+//Consignar
+export function consignar(identificacion, numeroCuenta, monto) {
+    const montoNumero = Number(monto);
+
+    const buscarCuenta = leerCuentas().find(c => (c.clienteIdentificacion === identificacion) && (c.numero === numeroCuenta));
+    if(buscarCuenta === undefined) {
+        return {
+            "exito" : false,
+            "mensaje" : "Cuenta no encontrada"
+        }
+    }
+
+    const cuenta = cuentaDesdeDatos(buscarCuenta);
+
+    const respuesta = cuenta.consignar(montoNumero);
+    if(respuesta.exito === false) {
+        return respuesta;
+    }
+
+    const cuentas = leerCuentas();
+    const indice = cuentas.findIndex(c => c.numero === buscarCuenta.numero);
+    cuentas[indice] = cuentaADatos(cuenta);
+    guardarCuentas(cuentas)
+
+    return {
+        "exito" : true,
+        "mensaje" : "Consignacion Exitosa",
+        "saldo" : cuenta.saldo
+    }
+
+}
+
+// Retirar
+export function retirar(identificacion, numeroCuenta, monto) {
+    const montoNumero = Number(monto);
+
+    const buscarCuenta = leerCuentas().find(c => (c.clienteIdentificacion === identificacion) && (c.numero === numeroCuenta));
+    if(buscarCuenta === undefined) {
+        return {
+            "exito" : false,
+            "mensaje" : "Cuenta no Encontrada"
+        }
+    }; 
+    
+    const cuenta = cuentaDesdeDatos(buscarCuenta);
+
+    const respuesta = cuenta.retirar(montoNumero);
+    if(respuesta.exito === false) {
+        return respuesta;
+    }
+
+    const cuentas = leerCuentas();
+    const indice = cuentas.findIndex(c => c.numero === buscarCuenta.numero);
+    cuentas[indice] = cuentaADatos(cuenta);
+    guardarCuentas(cuentas);
+
+    return {
+        "exito" : true,
+        "mensaje" : "Retiro Exitoso",
+        "saldo" : cuenta.saldo
+    };
+}
+
+//Transferir
+export function transferir(identificacionOrigen, numeroCuentaOrigen, numeroCuentaDestino, monto) {
+    const montoNumero = Number(monto);
+
+    const cuentas = leerCuentas();
+
+    const cuentaOrigen = cuentas.find(c => (c.clienteIdentificacion === identificacionOrigen) && (c.numero === numeroCuentaOrigen));
+    if(cuentaOrigen === undefined) {
+        return {
+            "exito" : false,
+            "mensaje" : "Cuenta de origen no encontrada"
+        };
+    }
+
+    const cuentaDestino = cuentas.find( c => c.numero === numeroCuentaDestino);
+    if(cuentaDestino === undefined) {
+        return {
+            "exito" : false,
+            "mensaje" : "Cuenta de destino no encontrada"
+        };
+    }
+
+    if(numeroCuentaOrigen === numeroCuentaDestino) {
+        return {
+            "exito" : false,
+            "mensaje" : "No puedes transferir a la misma cuenta"
+        };
+    }
+
+    const origen = cuentaDesdeDatos(cuentaOrigen);
+    const destino = cuentaDesdeDatos(cuentaDestino);
+
+    const salida = origen.transferirSalida(montoNumero);
+    if(salida.exito === false) {
+        return salida;
+    }
+
+    destino.transferirEntrada(montoNumero);
+    
+    cuentas[cuentas.findIndex(c => c.numero === cuentaOrigen.numero)] = cuentaADatos(origen);
+    cuentas[cuentas.findIndex(c => c.numero === cuentaDestino.numero)] = cuentaADatos(destino);
+    guardarCuentas(cuentas);
+
+    return { 
+        "exito" : true, 
+        "mensaje" : "Transferencia Exitosa", 
+        "monto" : montoNumero 
+    };
 }
 
 function clienteADatos(cliente) {
@@ -161,3 +340,5 @@ function tarjetaDesdeDatos(datos) {
     tarjeta.deuda = datos.deuda;
     return tarjeta;
 }
+
+

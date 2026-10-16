@@ -23,7 +23,7 @@
             <div class="tarjeta-formulario">
                 <h1 class="titulo-formulario">Iniciar sesión</h1>
                 <p class="texto-descripcion">Ingresa tus datos para acceder a tu sucursal virtual.</p>
-                <form class="formulario">
+                <form id="formulario-login" class="formulario">
                     <div class="grupo-entrada">
                         <label class="etiqueta" for="usuario">Usuario</label>
                         <input id="usuario" name="usuario" type="text" class="campo-texto" placeholder="Ingresa tu usuario" autocomplete="username" required>
@@ -33,6 +33,7 @@
                         <input id="contrasena" name="contrasena" type="password" class="campo-texto" placeholder="Ingresa tu contraseña" autocomplete="current-password" required>
                     </div>
                     <button type="submit" class="boton-accion" id="ingresar">Ingresar al cajero</button>
+                    <p id="mensaje-login" role="alert" aria-live="polite"></p>
                 </form>
                 <p class="texto-enlace-formulario">¿Aún no tienes cuenta? <a href="registro.html">Regístrate</a></p>
                 <a class="enlace-secundario" href="index.html">Volver a la página principal</a>

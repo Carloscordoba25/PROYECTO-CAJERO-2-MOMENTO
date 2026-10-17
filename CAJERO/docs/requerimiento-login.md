@@ -1,111 +1,105 @@
-﻿# Requerimiento â€” MÃ³dulo de Inicio de SesiÃ³n
+﻿# Requerimiento — Módulo de inicio de sesión
 
-**Proyecto:** Mi Plata Financial Bank (Cajero Web Â· CESDE)
-**MÃ³dulo:** AutenticaciÃ³n / Login
-**Responsable de implementaciÃ³n:** AndrÃ©s
-**Arquitectura:** JavaScript con mÃ³dulos ES (`import` / `export`), servido con Live Server
-**Fecha:** 2026-10-14
-
----
+**Proyecto:** Mi Plata Financial Bank (CESDE, POO con JavaScript)
+**Módulo:** Autenticación / inicio de sesión
+**Responsable:** Andrés Felipe Duque
+**Arquitectura:** ES Modules (`import`/`export`) + `localStorage`
+**Núcleo involucrado:** clase `Cliente` (`js/models/cliente.js`) y servicio `iniciarSesion` (`js/service/servicios.js`)
 
 ## 1. Objetivo
+Permitir que un cliente inicie sesión con su usuario y contraseña. El servicio aplica la regla de intentos fallidos y el **bloqueo temporal con fecha**. El controlador solo captura el evento, lee los inputs, llama al servicio y muestra el resultado en pantalla.
 
-Implementar el inicio de sesiÃ³n: el cliente escribe **usuario** y **contraseÃ±a**; el sistema valida contra los datos guardados, aplica la regla de **bloqueo automÃ¡tico tras 3 intentos fallidos**, crea la sesiÃ³n y redirige al panel de transacciones.
-
-## 2. Alcance (2 componentes)
-
-| Componente | Archivo | Tipo |
-|---|---|---|
-| Servicio (lÃ³gica de negocio) | `js/service/servicios.js` | funciÃ³n `iniciarSesion(usuario, contrasena)` |
-| Controlador (interfaz) | `js/controller/login.js` | captura eventos del formulario |
-
-> Si el servicio ya existe, respetar su contrato (secciÃ³n 4).
-> Si no existe, AndrÃ©s debe implementarlo con las reglas de la secciÃ³n 5.
+## 2. Alcance
+- **Controlador:** `js/controller/login.js` (Andrés).
+- **Servicio:** `iniciarSesion(usuario, contrasena)` (ya implementado).
+- **HTML:** `html/iniciar-sesion.html`.
 
 ## 3. Regla de arquitectura (obligatoria)
-
-El **controlador** no debe contener lÃ³gica de negocio ni tocar `localStorage`.
-Su Ãºnico trabajo: **capturar evento â†’ leer inputs â†’ llamar al servicio â†’ manejar la respuesta**.
-Cada pÃ¡gina carga **un solo** `<script type="module">`.
+- El **controlador NO** valida contraseñas, **NO** cuenta intentos y **NO** toca `localStorage`.
+- Su único trabajo: **capturar evento → leer inputs → llamar al servicio → mostrar la respuesta**.
+- Cada página carga **un solo** `<script type="module">`.
 
 ## 4. Contrato del servicio `iniciarSesion(usuario, contrasena)`
-
 - **Entrada:** `usuario` (string), `contrasena` (string).
-- **Salida:** SIEMPRE un objeto `{ exito: boolean, mensaje: string, ... }`. Nunca un string ni `undefined`.
+- **Salida:** SIEMPRE `{ exito: boolean, mensaje: string, ... }`.
 
-| Caso | Respuesta |
+| Caso | Resultado |
 |---|---|
-| Usuario no existe | `{ exito: false, mensaje: "Usuario no encontrado." }` |
-| Cuenta bloqueada | `{ exito: false, mensaje: "Cuenta bloqueada por 3 intentos fallidos." }` |
-| ContraseÃ±a incorrecta (intento < 3) | `{ exito: false, mensaje: "ContraseÃ±a incorrecta. Intento N de 3." }` |
-| Tercer intento fallido | Bloquea la cuenta y responde `{ exito: false, mensaje: "Cuenta bloqueada por 3 intentos fallidos." }` |
-| Credenciales correctas | Reinicia intentos, guarda sesiÃ³n y responde `{ exito: true, mensaje: "Bienvenido, <nombre>." }` |
+| Usuario inexistente | `{ exito:false, mensaje:"Usuario no encontrado." }` |
+| Contraseña incorrecta (1.º y 2.º fallo) | `{ exito:false, mensaje:"Contraseña incorrecta. Intento N de 3." }` |
+| 3.er fallo | bloquea la cuenta y `{ exito:false, mensaje:"Cuenta bloqueada por 3 intentos fallidos." }` |
+| Intento con **bloqueo vigente** | `{ exito:false, mensaje:"Cuenta bloqueada. Intenta de nuevo en X min." }` |
+| Intento con **bloqueo expirado** | se desbloquea solo y continúa la validación normal |
+| Credenciales correctas | `{ exito:true, mensaje:"Inicio de sesion exitoso" }` |
 
-## 5. Reglas internas del servicio (si AndrÃ©s lo implementa)
+## 5. Reglas del núcleo — bloqueo con fecha (clase `Cliente`)
 
-1. Buscar el cliente por `usuario` entre los usuarios guardados (`leerUsuarios`).
-2. Reconstruir la instancia `Cliente` a partir del dato plano.
-3. Si el cliente `estaBloqueado()` â†’ rechazar de inmediato.
-4. Comparar la contraseÃ±a.
-5. Por cada fallo: aumentar el contador de intentos del usuario.
-6. Al llegar a **3** fallos: marcar al cliente como bloqueado (`bloquear()`) y guardar.
-7. Si acierta: reiniciar el contador de intentos y guardar la sesiÃ³n (`{ identificacion, usuario }`).
+1. La clase tiene la constante `static MINUTOS_BLOQUEO = 5` (duración del bloqueo, configurable).
+2. `bloquear()` → marca `estado = "bloqueado"` **y** guarda `fechaBloqueo = new Date()`.
+3. `desbloquear()` → marca `estado = "activo"` **y** limpia `fechaBloqueo = null`.
+4. `estaBloqueado()` → `estado === "bloqueado"` (solo mira el estado, no el tiempo).
+5. `bloqueoVigente()` → indica si el bloqueo **no ha expirado**:
+   - no está bloqueado → `false`;
+   - bloqueado **sin fecha** (bloqueo viejo o manual) → `true` (se respeta);
+   - bloqueado con fecha → `transcurrido < MINUTOS_BLOQUEO * 60000`.
+6. `minutosRestantesBloqueo()` → minutos que faltan para que expire (mínimo **1**); si no hay fecha → `MINUTOS_BLOQUEO`.
 
-> Existen ya funciones de persistencia para esto: `leerUsuarios`, `guardarUsuarios`, `leerIntentos`, `aumentarIntentos`, `reiniciarIntentos`, `guardarSesion`.
+**Persistencia:** el objeto plano del cliente guarda `fechaBloqueo` como texto ISO (o `null`), y `clienteDesdeDatos` lo restaura al reconstruir la instancia.
 
-## 6. HTML â€” estado actual y cambios requeridos
+### Regla de intentos y bloqueo (servicio `iniciarSesion`)
+1. Buscar el cliente por `usuario`. Si no existe → "Usuario no encontrado.".
+2. Reconstruir el `Cliente` (trae su `fechaBloqueo`).
+3. Si `bloqueoVigente()` → rechazar con los minutos restantes (`minutosRestantesBloqueo()`).
+3. Si **no** vigente pero `estaBloqueado()` → desbloquear solo: `desbloquear()` + `reiniciarIntentos()` + guardar el cliente, y **continuar**.
+4. Comparar la contraseña.
+5. Cada fallo → `aumentarIntentos(usuario)`.
+6. Al llegar a **3** fallos → `bloquear()` (estampa la fecha) y guardar → mensaje de bloqueo.
+7. Si acierta → `reiniciarIntentos(usuario)` y `guardarSesion({ identificacion, usuario })`.
 
-**Existe hoy** en `iniciar-sesion.html`:
-- Input usuario: `id="usuario"` (type text)
-- Input contraseÃ±a: `id="contrasena"` (type password)
-- BotÃ³n: "Ingresar al cajero" con `type="button"` (sin id)
+> El **auto-desbloqueo** es una mejora sobre el requisito base (el PDF no define tiempo). Se documenta aquí para dejar constancia de que es intencional.
 
-**Cambios que AndrÃ©s debe hacer en el HTML:**
-1. Cambiar el botÃ³n de `type="button"` a **`type="submit"`** (para permitir la tecla Enter).
-2. **Agregar** un contenedor de mensajes debajo del botÃ³n:
+## 6. HTML — estado actual y cambios requeridos
+
+**Cambios que Andrés debe hacer en `iniciar-sesion.html`:**
+1. El botón debe ser **`type="submit"`** (ya aplicado, id `ingresar`).
+2. **Agregar** el contenedor de mensajes debajo del botón:
    `<p id="mensaje-login" role="alert" aria-live="polite"></p>`
-3. Cargar el controlador antes de `</body>` (ya colocado):
-   `<script type="module" src="../js/controller/login.js"></script>` (ya colocado)
-4. (Opcional) estilos: rojo para error, verde para Ã©xito.
+3. El `<script type="module" src="../js/controller/login.js">` ya está colocado.
+4. (Opcional) estilos: rojo para error, verde para éxito.
 
-## 7. Requerimientos funcionales â€” controlador `login.js`
-
-- **RF-01** Al cargar la pÃ¡gina, si ya hay una sesiÃ³n activa, redirigir al panel (opcional pero recomendado).
+## 7. Requerimientos funcionales — controlador `login.js`
+- **RF-01** Al cargar, si ya hay sesión activa (`obtenerSesionActiva()`), redirigir a `transacciones.html`.
 - **RF-02** Escuchar el evento `submit` del formulario y ejecutar `preventDefault()`.
-- **RF-03** Leer los valores de `#usuario` y `#contrasena` y aplicarles `.trim()`.
-- **RF-04** Validar **campos vacÃ­os** localmente antes de llamar al servicio (mensaje: "Debes completar usuario y contraseÃ±a.").
+- **RF-03** Leer `#usuario` y `#contrasena` aplicando `.trim()`.
+- **RF-04** Validar campos vacíos localmente (mensaje: "Debes completar usuario y contraseña.") sin llamar al servicio.
 - **RF-05** Llamar a `iniciarSesion(usuario, contrasena)`.
-- **RF-06** Si `exito === false`: mostrar el `mensaje` en `#mensaje-login` con estilo de error y **limpiar el campo contraseÃ±a**.
-- **RF-07** Si `exito === true`: mostrar el mensaje de Ã©xito y redirigir a `transacciones.html`.
-- **RF-08** El controlador **no** compara contraseÃ±as ni cuenta intentos (eso es del servicio).
+- **RF-06** Si `exito === false`: mostrar `resultado.mensaje` en `#mensaje-login` con estilo de error y **limpiar la contraseña**.
+- **RF-07** Si `exito === true`: mostrar el mensaje y redirigir a `transacciones.html`.
+- **RF-08** El controlador no compara contraseñas ni cuenta intentos (eso es del servicio).
 - **RF-09** No usar `localStorage` directamente.
 
-## 8. Criterios de aceptaciÃ³n (pruebas)
+## 8. Criterios de aceptación (pruebas)
 
-| # | AcciÃ³n | Resultado esperado |
+| # | Acción | Resultado esperado |
 |---|---|---|
 | 1 | Login con credenciales correctas | Redirige a `transacciones.html` |
-| 2 | Usuario inexistente | Muestra "Usuario no encontrado." |
-| 3 | ContraseÃ±a incorrecta (1Âª vez) | Muestra "ContraseÃ±a incorrecta. Intento 1 de 3." |
-| 4 | 2Âª y 3Âª vez incorrecta | "Intento 2 de 3" y luego "Cuenta bloqueada por 3 intentos fallidos." |
-| 5 | Tras el bloqueo, credenciales correctas | Muestra "Cuenta bloqueada por 3 intentos fallidos." |
-| 6 | Enviar con campos vacÃ­os | Muestra validaciÃ³n local; **no** llama al servicio |
-| 7 | Presionar Enter en un input | Dispara el login (por `type="submit"`) |
-| 8 | Tras un error | El campo contraseÃ±a queda vacÃ­o |
+| 2 | Usuario inexistente | "Usuario no encontrado." |
+| 3 | Contraseña incorrecta (1.ª y 2.ª vez) | "Contraseña incorrecta. Intento 1 de 3." / "... 2 de 3." |
+| 4 | 3.ª vez incorrecta | "Cuenta bloqueada por 3 intentos fallidos." |
+| 5 | Intento inmediato estando bloqueado | "Cuenta bloqueada. Intenta de nuevo en X min." (no valida la contraseña) |
+| 6 | Intento **5 minutos después** del bloqueo | Se desbloquea solo y, con la clave correcta, **entra** |
+| 7 | Tras el auto-desbloqueo | El contador de intentos vuelve a `0` |
+| 8 | Enviar con campos vacíos | Validación local; **no** llama al servicio |
+| 9 | Presionar Enter en un input | Dispara el login (por `type="submit"`) |
+| 10 | Tras un error | El campo contraseña queda vacío |
 
-## 9. QuÃ© NO hacer (errores que se penalizan)
-
-- No usar `alert()` como Ãºnica forma de feedback (usar `#mensaje-login`).
+## 9. Qué NO hacer (errores que se penalizan)
+- No usar `alert()` como única forma de feedback (usar `#mensaje-login`).
 - No guardar nada en `localStorage` desde `login.js`.
-- No duplicar en el controlador la lÃ³gica de intentos o de comparaciÃ³n de claves.
-- No dejar la contraseÃ±a escrita en el input despuÃ©s de un error.
+- No duplicar en el controlador la lógica de intentos, bloqueo o comparación de claves.
+- No dejar la contraseña escrita en el input después de un error.
 
 ## 10. Entregable
-
 - `js/controller/login.js` funcional (controlador).
-- FunciÃ³n `iniciarSesion` en `js/service/servicios.js` (ya existe).
-- `iniciar-sesion.html` actualizado: `type="submit"`, `#mensaje-login` y el `<script type="module">`.
-
-
-
-
+- `iniciar-sesion.html` con `type="submit"` y `#mensaje-login`.
+- Núcleo ya listo: `Cliente` (con fecha de bloqueo) e `iniciarSesion` en el servicio.

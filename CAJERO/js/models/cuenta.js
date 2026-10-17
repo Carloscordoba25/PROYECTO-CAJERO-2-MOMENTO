@@ -38,10 +38,12 @@ export class Cuenta {
 
     /* ---------------------------- Operaciones ----------------------------- */
 
+    // Devuelve el saldo actual de la cuenta.
     consultarSaldo() {
         return this.#saldo;
     }
 
+    // Suma un monto al saldo; rechaza montos nulos o menores/iguales a cero.
     consignar(monto) {
         if (monto === null || monto === undefined || isNaN(monto) || monto <= 0) {
             return { exito: false, mensaje: "El monto a consignar debe ser un número mayor a cero." };
@@ -55,6 +57,7 @@ export class Cuenta {
         };
     }
 
+    // Resta un monto al saldo si no supera el tope; aplica la regla de cada hija.
     retirar(monto) {
         if (monto === null || monto === undefined || isNaN(monto) || monto <= 0) {
             return { exito: false, mensaje: "El monto a retirar debe ser un número mayor a cero." };
@@ -86,18 +89,22 @@ export class Cuenta {
         };
     }
 
+    // Tope de retiro de la cuenta base (cada hija lo redefine).
     calcularMontoMaximoRetiro() {
         return this.#saldo;
     }
 
+    // Gancho polimórfico: por defecto no aplica ninguna regla antes de retirar.
     aplicarReglasPrevioRetiro() {
         return { interesAplicado: 0 };
     }
 
+    // Salida de dinero por transferencia (reutiliza el retiro).
     transferirSalida(monto) {
         return this.retirar(monto);
     }
 
+    // Entrada de dinero por transferencia: suma el abono recibido al saldo.
     transferirEntrada(monto) {
         if (monto === null || monto === undefined || isNaN(monto) || monto <= 0) {
             return { exito: false, mensaje: "El monto a transferir debe ser un número mayor a cero." };

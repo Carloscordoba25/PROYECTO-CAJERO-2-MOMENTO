@@ -104,6 +104,16 @@ Todos usan **encapsulamiento Nivel 2**: campos privados reales (`#campo`) y acce
 
 **Métodos:** `cupoDisponible()` = cupo − deuda; `calcularTasa(cuotas)`; `calcularCuotaMensual(capital, cuotas)`; `realizarCompra(capital, cuotas)` → valida capital, cuotas enteras ≥ 1 y cupo, suma a la deuda y responde `{ exito, mensaje, capital, cuotas, tasa, cuotaMensual, deudaNueva }`.
 
+### 1.6 `Movimiento` (`movimiento.js`)
+
+**Campos privados:** `#fecha`, `#tipo`, `#valor`, `#numeroCuenta`, `#clienteIdentificacion`.
+
+**Constructor:** `new Movimiento(tipo, valor, numeroCuenta, clienteIdentificacion, fecha = new Date())` → la fecha es opcional; si no se pasa, el movimiento nace con la fecha actual.
+
+**Getters:** `fecha`, `tipo`, `valor`, `numeroCuenta`, `clienteIdentificacion` (solo lectura: es un registro histórico que no se modifica).
+
+**Valores de `tipo`:** `"consignacion"`, `"retiro"`, `"transferencia"` (los tres que pide el PDF del docente).
+
 ---
 
 ## 2. Persistencia (`js/config/persistencia.js`)
@@ -139,11 +149,12 @@ usuario     : { identificacion, nombre, celular, correo, usuario, contrasena, es
 cuenta      : { tipo, numero, saldo, clienteIdentificacion }
 tarjeta     : { numero, cupo, deuda, clienteIdentificacion }
 sesion      : { identificacion, usuario }
-movimiento  : (por definir)
+movimiento  : { fecha, tipo, valor, numeroCuenta, clienteIdentificacion }
 ```
 
 > Claves de relación: **`clienteIdentificacion`** une cuentas y tarjetas con su dueño.
 > Identificador de cuenta: el campo es **`numero`** (ej. `"AH-123"`, `"CT-123"`).
+> Los movimientos también se enlazan por **`clienteIdentificacion`** (dueño) y por **`numeroCuenta`** (producto afectado).
 
 ---
 
@@ -164,6 +175,7 @@ devuelve un objeto `{ exito, mensaje, ... }` (nunca un string ni `undefined`).
 | `consignar` | `identificacion, numeroCuenta, monto` | `{ exito: true, mensaje, saldo }` |
 | `retirar` | `identificacion, numeroCuenta, monto` | `{ exito: true, mensaje, saldo }` |
 | `transferir` | `identificacionOrigen, numeroCuentaOrigen, numeroCuentaDestino, monto` | `{ exito: true, mensaje, monto }` |
+| `listarMovimientos` | `identificacion` | `{ exito: true, mensaje, movimientos }` (del más reciente al más antiguo) |
 
 ### 3.2 Reglas internas destacadas
 
@@ -180,6 +192,13 @@ devuelve un objeto `{ exito, mensaje, ... }` (nunca un string ni `undefined`).
 - **`transferir`**: lee la lista **una sola vez**, retira **primero** (`transferirSalida`) y solo si
   funciona consigna (`transferirEntrada`); valida que origen y destino existan y sean distintos;
   guarda los dos cambios juntos. Este orden evita "crear dinero" si algo falla.
+- **Registro de movimientos**: cada operación exitosa guarda un movimiento con el helper privado
+  `registrarMovimiento(tipo, valor, numeroCuenta, clienteIdentificacion)`:
+  - `consignar` → tipo `"consignacion"`;
+  - `retirar` → tipo `"retiro"`;
+  - `transferir` → **dos** movimientos, uno para la cuenta de origen y otro para la de destino.
+- **`listarMovimientos(identificacion)`**: filtra por `clienteIdentificacion` y devuelve el historial
+  **ordenado por fecha descendente** (`.sort` comparando `new Date(fecha)`).
 
 ### 3.3 Traductores (instancia ↔ objeto plano)
 
@@ -187,7 +206,7 @@ El servicio convierte entre instancias de clase y lo que se guarda en `localStor
 
 | Dirección | Funciones |
 |---|---|
-| Instancia → plano | `clienteADatos`, `cuentaADatos`, `tarjetaADatos` |
+| Instancia → plano | `clienteADatos`, `cuentaADatos`, `tarjetaADatos`, `movimientoADatos` |
 | Plano → instancia | `clienteDesdeDatos`, `cuentaDesdeDatos`, `tarjetaDesdeDatos` |
 
 `cuentaDesdeDatos` es **polimórfica**: crea `CuentaAhorros` o `CuentaCorriente` según `tipo`.
@@ -208,6 +227,7 @@ El núcleo está **implementado y probado** con un entorno que simula `localStor
 | `registrarCliente` + `iniciarSesion` | ✔ pasa |
 | `consultarCliente`, `obtenerCuentas`, `obtenerTarjetas` | ✔ pasa |
 | `consignar`, `retirar`, `transferir` (incluye errores y atomicidad) | ✔ pasa |
+| `listarMovimientos` (historial por cliente y orden descendente) | ✔ pasa |
 | Validación integral del servicio | ✔ todas las pruebas pasan |
 
 ---
@@ -216,7 +236,9 @@ El núcleo está **implementado y probado** con un entorno que simula `localStor
 
 | Pendiente | Detalle |
 |---|---|
-| Función de sesión para controladores | Exponer `obtenerSesionActiva()` y `cerrarSesionUsuario()` para que los controladores no toquen `localStorage`. |
-| **Movimientos** | Falta el modelo `Movimiento` y las funciones de servicio para **registrar** un movimiento en cada operación y **listarlos**. La persistencia ya tiene `leerMovimientos`/`guardarMovimientos`, pero sin uso. |
 | Funciones de tarjeta | Faltan funciones de servicio para compras/abonos de tarjeta usando `TarjetaCredito.realizarCompra`. |
 | Perfil | Falta función de servicio para actualizar datos del cliente y cambiar contraseña. |
+| CRUD de usuarios (admin) | El PDF pide crear, consultar, editar y eliminar usuarios; faltan las funciones de servicio de edición y borrado. |
+
+> ✅ Ya resueltos: la **sesión para controladores** (`obtenerSesionActiva` / `cerrarSesionUsuario`) y el
+> **historial de movimientos** (modelo `Movimiento`, `listarMovimientos` y el registro automático en cada operación).

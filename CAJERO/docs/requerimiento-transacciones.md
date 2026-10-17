@@ -18,8 +18,8 @@ Implementar el panel que ve el cliente **después de iniciar sesión**: mostrar 
 |---|---|---|
 | Servicio (lógica de negocio) | `js/service/servicios.js` | ✅ ya implementado |
 | Persistencia | `js/config/persistencia.js` | ✅ ya implementado |
-| Controlador (interfaz) | `js/controller/transacciones.js` | ⏳ **a implementar por Carlos** |
-| HTML | `html/transacciones.html` | ⏳ requiere cambios (sección 6) |
+| Controlador (interfaz) | `js/controller/transacciones.js` | ✅ implementado por Carlos |
+| HTML | `html/transacciones.html` | ✅ actualizado |
 
 ## 2.1 Aclaración sobre el "servicio de sesión"
 
@@ -28,7 +28,7 @@ El controlador **no debe tocar `localStorage`**. Para saber quién inició sesi�
 - **`obtenerSesionActiva()`** → `{ exito: true, sesion: { identificacion, usuario } }` o `{ exito: false, mensaje: "No hay sesión activa." }`
 - **`cerrarSesionUsuario()`** → cierra la sesión actual.
 
-> ⚠️ Estas dos funciones **aún no existen** en `servicios.js`. Quedan como tarea del responsable del servicio. Carlos debe consumirlas con ese contrato.
+> ✅ Ambas funciones ya están implementadas en `servicios.js`. El controlador las consume con este contrato.
 
 ---
 
@@ -53,6 +53,7 @@ Cada página carga **un solo** `<script type="module">` (ya colocado en `transac
 | `consignar` | `identificacion`, `numeroCuenta`, `monto` | `{ exito: true, mensaje, saldo }` |
 | `retirar` | `identificacion`, `numeroCuenta`, `monto` | `{ exito: true, mensaje, saldo }` |
 | `transferir` | `identificacionOrigen`, `numeroCuentaOrigen`, `numeroCuentaDestino`, `monto` | `{ exito: true, mensaje, monto }` |
+| `listarMovimientos` | `identificacion` | `{ exito: true, mensaje, movimientos }` (del más reciente al más antiguo) |
 
 **Forma de cada cuenta** devuelta por `obtenerCuentas` (en `cuentas`):
 
@@ -77,7 +78,7 @@ Para respetar la regla de arquitectura (el controlador no toca `localStorage`), 
 | `obtenerSesionActiva()` | ninguna | `{ exito: true, sesion: { identificacion, usuario } }` o `{ exito: false, mensaje: "No hay sesión activa." }` |
 | `cerrarSesionUsuario()` | ninguna | `{ exito: true, mensaje }` |
 
-> Mientras estas funciones no existan, este requerimiento queda bloqueado en el arranque del panel. (El responsable del servicio las implementará.)
+> ✅ Implementadas: el arranque del panel consulta la sesión con `obtenerSesionActiva()` y el cierre con `cerrarSesionUsuario()`.
 
 ---
 
@@ -95,6 +96,7 @@ Para respetar la regla de arquitectura (el controlador no toca `localStorage`), 
 | Producto de destino | `cuenta-destino` |
 | Identificación del destinatario | `identificacion-destino` |
 | Monto a transferir | `monto-transferencia` |
+| Cuerpo de la tabla de movimientos | `cuerpo-movimientos` |
 
 **Cambios que Carlos debe hacer en el HTML:**
 
@@ -132,16 +134,36 @@ Para respetar la regla de arquitectura (el controlador no toca `localStorage`), 
 
 ---
 
-## 8. Fuera de alcance de este requerimiento
+## 8. Historial de movimientos (implementado) y fuera de alcance
 
-Estas partes del HTML **no** se implementan aún porque el servicio todavía no las soporta:
+### 8.1 Historial de movimientos — implementado
+
+El PDF del docente pide, dentro del panel, la opción **"Ver movimientos"** (requisito "Consultar Movimientos"): *registrar cada transacción almacenando fecha y hora, tipo (retiro, consignación, transferencia) y valor, y mostrar el historial ordenado por fecha descendente*.
+
+| Capa | Elemento | Detalle |
+|---|---|---|
+| Modelo | `js/models/movimiento.js` | Clase `Movimiento` (Nivel 2): `fecha`, `tipo`, `valor`, `numeroCuenta`, `clienteIdentificacion`. |
+| Servicio | `registrarMovimiento(...)` (privada) | Se invoca dentro de `consignar`, `retirar` y `transferir` para guardar cada movimiento. |
+| Servicio | `listarMovimientos(identificacion)` | Devuelve `{ exito, mensaje, movimientos }` filtrados por cliente y ordenados por fecha descendente. |
+| Controlador | `actualizarMovimientos()` | Pinta las filas del historial y lo refresca tras cada operación. |
+| HTML | `<tbody id="cuerpo-movimientos">` | Cuerpo de la tabla "Movimientos recientes". |
+
+**Reglas:**
+
+- `tipo` usa valores internos `"consignacion"`, `"retiro"` y `"transferencia"`; el controlador los muestra como **Consignación**, **Retiro** y **Transferencia**.
+- Una **transferencia** genera **dos** movimientos: uno para la cuenta de origen y otro para la de destino, así cada usuario ve el movimiento en su propio historial.
+- Si el cliente no tiene movimientos, la tabla muestra "No hay movimientos registrados para mostrar.".
+
+### 8.2 Fuera de alcance
+
+Estas partes del panel **no** se implementan aún porque el servicio todavía no las soporta:
 
 | Sección del panel | Motivo |
 |---|---|
-| "Ver movimientos" | No existe el modelo `Movimiento` ni funciones de servicio para listarlos (solo hay `leerMovimientos`/`guardarMovimientos` en persistencia, sin uso). |
+| Compras/abonos con Tarjeta de Crédito | Falta la función de servicio que use `TarjetaCredito.realizarCompra` (pendiente del núcleo). |
 | "Perfil" (editar datos / cambiar contraseña) | No existe función de servicio para actualizar ni guardar cambios de perfil. |
 
-> Recomendación: dejarlas como están (mensaje "no disponible") hasta que el servicio las soporte.
+> Mientras esas funciones no existan en el servicio, esas dos secciones quedan pendientes.
 
 ---
 
@@ -158,6 +180,8 @@ Estas partes del HTML **no** se implementan aún porque el servicio todavía no 
 | 7 | Transferir a la misma cuenta | Muestra el error del servicio |
 | 8 | Dejar el monto vacío o en 0 | El servicio responde error y se muestra |
 | 9 | Cerrar sesión | Redirige a `iniciar-sesion.html` |
+| 10 | Ver movimientos tras consignar, retirar y transferir | La tabla muestra cada operación con fecha, tipo y valor, de la más reciente a la más antigua |
+| 11 | Ver movimientos sin operaciones | Muestra "No hay movimientos registrados para mostrar." |
 
 ---
 
@@ -177,3 +201,4 @@ Estas partes del HTML **no** se implementan aún porque el servicio todavía no 
 - `js/controller/transacciones.js` funcional (controlador).
 - `transacciones.html` actualizado: ids de formularios, `type="submit"`, contenedores `#mensaje-*`, `#saldo-actual` y el CSS corregido.
 - (Dependencia del servicio) `obtenerSesionActiva()` y `cerrarSesionUsuario()` en `servicios.js`.
+- Historial de movimientos: `js/models/movimiento.js`, `listarMovimientos()` en `servicios.js` y el render en `#cuerpo-movimientos`.

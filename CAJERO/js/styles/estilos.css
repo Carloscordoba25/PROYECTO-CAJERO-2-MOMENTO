@@ -713,13 +713,13 @@ body {
 }
 
 .nota-cuenta,
-.aviso-prototipo {
+.aviso-informativo {
     color: #65727e;
     font-size: 0.9rem;
     line-height: 1.5;
 }
 
-.aviso-prototipo {
+.aviso-informativo {
     margin-top: 1.5rem;
     padding: 1rem 1.2rem;
     border-left: 4px solid var(--acento-celeste);

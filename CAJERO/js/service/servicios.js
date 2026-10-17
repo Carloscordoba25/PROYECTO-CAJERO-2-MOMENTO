@@ -1,8 +1,9 @@
-import { leerUsuarios, guardarUsuarios, leerCuentas, guardarCuentas, leerTarjetas, guardarTarjetas, aumentarIntentos, reiniciarIntentos, guardarSesion, leerSesion, cerrarSesion } from "../config/persistencia.js";
+import { leerUsuarios, guardarUsuarios, leerCuentas, guardarCuentas, leerTarjetas, guardarTarjetas, leerMovimientos, guardarMovimientos, aumentarIntentos, reiniciarIntentos, guardarSesion, leerSesion, cerrarSesion } from "../config/persistencia.js";
 import { Cliente } from "../models/cliente.js";
 import { CuentaAhorros } from "../models/cuenta-ahorros.js";
 import { CuentaCorriente } from "../models/cuenta-corriente.js";
 import { TarjetaCredito } from "../models/tarjeta-credito.js";
+import { Movimiento } from "../models/movimiento.js";
 
 //Registro de cliente
 export function registrarCliente(identificacion, nombre, celular, correo, usuario, contrasena, confirmarContrasena) {    
@@ -203,6 +204,8 @@ export function consignar(identificacion, numeroCuenta, monto) {
     cuentas[indice] = cuentaADatos(cuenta);
     guardarCuentas(cuentas)
 
+    registrarMovimiento("consignacion", montoNumero, cuenta.numero, identificacion);
+
     return {
         "exito" : true,
         "mensaje" : "Consignacion Exitosa",
@@ -234,6 +237,8 @@ export function retirar(identificacion, numeroCuenta, monto) {
     const indice = cuentas.findIndex(c => c.numero === buscarCuenta.numero);
     cuentas[indice] = cuentaADatos(cuenta);
     guardarCuentas(cuentas);
+
+    registrarMovimiento("retiro", montoNumero, cuenta.numero, identificacion);
 
     return {
         "exito" : true,
@@ -285,6 +290,10 @@ export function transferir(identificacionOrigen, numeroCuentaOrigen, numeroCuent
     cuentas[cuentas.findIndex(c => c.numero === cuentaDestino.numero)] = cuentaADatos(destino);
     guardarCuentas(cuentas);
 
+    // Un movimiento para la cuenta que envia y otro para la que recibe.
+    registrarMovimiento("transferencia", montoNumero, cuentaOrigen.numero, identificacionOrigen);
+    registrarMovimiento("transferencia", montoNumero, cuentaDestino.numero, cuentaDestino.clienteIdentificacion);
+
     return { 
         "exito" : true, 
         "mensaje" : "Transferencia Exitosa", 
@@ -315,6 +324,27 @@ export function cerrarSesionUsuario() {
         "exito" : true,
         "mensaje" : "Sesion cerrada"
     };
+}
+
+// Listar movimientos
+export function listarMovimientos(identificacion) {
+    const movimientos = leerMovimientos()
+        .filter(m => m.clienteIdentificacion === identificacion)
+        .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+    return {
+        "exito" : true,
+        "mensaje" : "OK",
+        "movimientos" : movimientos
+    };
+}
+
+// Guarda un movimiento nuevo en el historial del cliente.
+function registrarMovimiento(tipo, valor, numeroCuenta, clienteIdentificacion) {
+    const movimiento = new Movimiento(tipo, valor, numeroCuenta, clienteIdentificacion);
+    const movimientos = leerMovimientos();
+    movimientos.push(movimientoADatos(movimiento));
+    guardarMovimientos(movimientos);
 }
 
 // Convierte una instancia Cliente en objeto plano para guardar.
@@ -348,6 +378,17 @@ function tarjetaADatos(tarjeta) {
         cupo: tarjeta.cupo,
         deuda: tarjeta.deuda,
         clienteIdentificacion: tarjeta.clienteIdentificacion
+    };
+}
+
+// Convierte una instancia Movimiento en objeto plano para guardar.
+function movimientoADatos(movimiento) {
+    return {
+        fecha: movimiento.fecha.toISOString(),
+        tipo: movimiento.tipo,
+        valor: movimiento.valor,
+        numeroCuenta: movimiento.numeroCuenta,
+        clienteIdentificacion: movimiento.clienteIdentificacion
     };
 }
 

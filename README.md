@@ -69,10 +69,10 @@ Hereda de Cuenta e implementa cálculo de intereses.
 Hereda de Cuenta e implementa funcionalidad de sobregiro.
 
 ### TarjetaCredito
-Hereda de Cuenta y administra cupos de crédito y cuotas.
+Clase independiente (NO hereda de Cuenta). Administra el cupo de crédito y la financiación en cuotas.
 
 ### Movimiento
-Registra las transacciones realizadas por cada usuario.
+Registro histórico de las transacciones. Se almacena como datos (fecha, tipo, valor), no como clase.
 
 ---
 
@@ -89,8 +89,7 @@ Jerarquía entre:
 
 Cuenta
 ├── CuentaAhorros
-├── CuentaCorriente
-└── TarjetaCredito
+└── CuentaCorriente
 
 ## Polimorfismo
 Implementación diferenciada de operaciones financieras según el tipo de producto.
@@ -273,28 +272,37 @@ Características:
 # 📂 Estructura del Proyecto
 
 ```text
-mi-plata/
+proyecto-cajero-2-momento/
 │
-├── index.html
-├── login.html
-├── registro.html
-├── cajero.html
+├── README.md
+├── .gitignore
 │
-├── css/
-│   └── styles.css
-│
-├── js/
-│   ├── Cliente.js
-│   ├── Cuenta.js
-│   ├── CuentaAhorros.js
-│   ├── CuentaCorriente.js
-│   ├── TarjetaCredito.js
-│   ├── Movimiento.js
-│   ├── Auth.js
-│   └── App.js
-│
-├── assets/
-│   ├── images
-│   └── icons
-│
-└── README.md
+└── CAJERO/
+    ├── html/
+    │   ├── index.html
+    │   ├── registro.html
+    │   ├── iniciar-sesion.html
+    │   ├── transacciones.html
+    │   ├── tarjetas.html
+    │   └── estilos.css
+    │
+    ├── IMG/
+    │
+    ├── docs/
+    │
+    └── js/
+        ├── config/
+        │   └── persistencia.js
+        ├── models/
+        │   ├── cliente.js
+        │   ├── cuenta.js
+        │   ├── cuenta-ahorros.js
+        │   ├── cuenta-corriente.js
+        │   └── tarjeta-credito.js
+        ├── service/
+        │   └── servicios.js
+        └── controller/
+            ├── registro.js
+            ├── login.js
+            └── transacciones.js
+```

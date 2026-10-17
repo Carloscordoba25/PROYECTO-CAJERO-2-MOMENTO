@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro | Mi Plata Financial Bank</title>
-    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="../js/styles/estilos.css">
 </head>
 <body>
     <header class="encabezado-bancario">
@@ -33,16 +33,16 @@
                         <input id="nombre-completo" name="nombre-completo" type="text" class="campo-texto" placeholder="Ej. Juan Pérez" autocomplete="name" required>
                     </div>
                     <div class="grupo-entrada">
+                        <label class="etiqueta" for="celular">Número de celular</label>
+                        <input id="celular" name="celular" type="tel" class="campo-texto" placeholder="Ej. 3001234567" autocomplete="tel" required>
+                    </div>
+                    <div class="grupo-entrada">
                         <label class="etiqueta" for="correo">Correo Electronico</label>
-                        <input id="correo" name="correo" type="mail" class="campo-texto" placeholder="Ej. fulanito@cesde.net" autocomplete="tel" required>
+                        <input id="correo" name="correo" type="email" class="campo-texto" placeholder="Ej. fulanito@cesde.net" autocomplete="email" required>
                     </div>
                     <div class="grupo-entrada">
                         <label class="etiqueta" for="nuevo-usuario">Nombre de usuario</label>
                         <input id="nuevo-usuario" name="usuario" type="text" class="campo-texto" placeholder="Crea un usuario único" autocomplete="username" required>
-                    </div>
-                    <div class="grupo-entrada">
-                        <label class="etiqueta" for="monto">Monto inicial de la cuenta</label>
-                        <input id="monto" name="monto" type="number" class="campo-texto" placeholder="Ingrese monto Ej: 10000" required>
                     </div>
                     <div class="grupo-entrada">
                         <label class="etiqueta" for="nueva-contrasena">Contraseña</label>
@@ -72,6 +72,6 @@
         </nav>
     </footer>
 
-    <script src="registro.js"></script>
+    <script type="module" src="../js/controller/registro.js"></script>
 </body>
 </html>

@@ -16,12 +16,37 @@ export class TarjetaCredito{
         this.#clienteIdentificacion = clienteIdentificacion;
     }
 
+    /* ------------ Accesores: la única puerta hacia los campos ------------- */
+
+    get numero() {
+        return this.#numero;
+    }
+
+    get cupo() {
+        return this.#cupo;
+    }
+
+    // La deuda se lee siempre; el setter existe para que la persistencia
+    // pueda RESTAURAR una deuda ya guardada al reconstruir la tarjeta.
+    get deuda() {
+        return this.#deuda;
+    }
+    set deuda(valor) {
+        this.#deuda = valor;
+    }
+
+    get clienteIdentificacion() {
+        return this.#clienteIdentificacion;
+    }
+
+    // Cupo que todavía queda disponible (cupo - deuda).
     cupoDisponible() {
         const cupoTotal = this.#cupo;
         const deudaActual = this.#deuda;
         return cupoTotal - deudaActual;
     }
 
+    // Devuelve la tasa de interés según el número de cuotas.
     calcularTasa(cuotas) {
         if(cuotas <= 2){
             return TarjetaCredito.DOS_CUOTAS;
@@ -32,6 +57,7 @@ export class TarjetaCredito{
         }
     }
 
+    // Calcula la cuota mensual que se pagará por el crédito.
     calcularCuotaMensual(capital, cuotas) {
         const tasa = this.calcularTasa(cuotas);
         if( tasa === 0 ) {
@@ -41,6 +67,7 @@ export class TarjetaCredito{
         }
     }
 
+    // Registra una compra: valida, suma a la deuda y calcula la cuota.
     realizarCompra(capital, cuotas) {
         // 1. Validar capital: número y mayor que cero
         if (capital === null || capital === undefined || isNaN(capital) || capital <= 0) {

@@ -180,6 +180,146 @@ export function obtenerTarjetas(identificacion) {
     };
 }
 
+// Comprar con tarjeta de crédito
+export function comprarConTarjeta(identificacion, numeroTarjeta, capital, cuotas) {
+    if (capital === undefined || cuotas === undefined || numeroTarjeta === undefined) {
+        return {
+            "exito": false,
+            "mensaje": "Todos los campos son obligatorios."
+        };
+    }
+
+    const capitalNum = Number(capital);
+    const cuotasNum = Number(cuotas);
+
+    if (!Number.isFinite(capitalNum) || capitalNum <= 0) {
+        return {
+            "exito": false,
+            "mensaje": "El capital debe ser un número mayor a cero."
+        };
+    }
+
+    if (!Number.isInteger(cuotasNum) || cuotasNum < 1) {
+        return {
+            "exito": false,
+            "mensaje": "El número de cuotas debe ser un entero mayor o igual a 1."
+        };
+    }
+
+    const usuario = leerUsuarios().find(u => u.identificacion === identificacion);
+    if (usuario === undefined) {
+        return {
+            "exito": false,
+            "mensaje": "Usuario no encontrado."
+        };
+    }
+
+    const tarjetas = leerTarjetas();
+    const idx = tarjetas.findIndex(t => t.numero === numeroTarjeta && t.clienteIdentificacion === identificacion);
+
+    if (idx === -1) {
+        return {
+            "exito": false,
+            "mensaje": "No se encontró la tarjeta de crédito."
+        };
+    }
+
+    const tc = tarjetaDesdeDatos(tarjetas[idx]);
+    const res = tc.realizarCompra(capitalNum, cuotasNum);
+
+    if (!res.exito) {
+        return res;
+    }
+
+    tarjetas[idx] = tarjetaADatos(tc);
+    guardarTarjetas(tarjetas);
+
+    return res;
+}
+
+// (nota: NO se guarda nada; solo calcula la tasa y la cuota estimada)
+export function calcularCuotaTarjeta(numeroTarjeta, capital, cuotas) {
+    const capitalNum = Number(capital);
+    const cuotasNum = Number(cuotas);
+
+    if (!Number.isFinite(capitalNum) || capitalNum <= 0 || !Number.isInteger(cuotasNum) || cuotasNum < 1) {
+        return {
+            "exito": false,
+            "mensaje": "Ingresa un capital y un número de cuotas válidos."
+        };
+    }
+
+    const tarjetas = leerTarjetas();
+    const datos = tarjetas.find(t => t.numero === numeroTarjeta);
+
+    if (datos === undefined) {
+        return {
+            "exito": false,
+            "mensaje": "No se encontró la tarjeta de crédito."
+        };
+    }
+
+    const tc = tarjetaDesdeDatos(datos);
+    const tasa = tc.calcularTasa(cuotasNum);
+    const cuotaMensual = tc.calcularCuotaMensual(capitalNum, cuotasNum);
+
+    return {
+        "exito": true,
+        "mensaje": "OK",
+        "tasa": tasa,
+        "cuotaMensual": cuotaMensual
+    };
+}
+
+// Abonar a tarjeta de crédito
+export function abonarTarjeta(identificacion, numeroTarjeta, monto) {
+    if (monto === undefined || numeroTarjeta === undefined) {
+        return {
+            "exito": false,
+            "mensaje": "Todos los campos son obligatorios."
+        };
+    }
+
+    const valor = Number(monto);
+
+    if (!Number.isFinite(valor) || valor <= 0) {
+        return {
+            "exito": false,
+            "mensaje": "El monto a abonar debe ser un número mayor a cero."
+        };
+    }
+
+    const usuario = leerUsuarios().find(u => u.identificacion === identificacion);
+    if (usuario === undefined) {
+        return {
+            "exito": false,
+            "mensaje": "Usuario no encontrado."
+        };
+    }
+
+    const tarjetas = leerTarjetas();
+    const idx = tarjetas.findIndex(t => t.numero === numeroTarjeta && t.clienteIdentificacion === identificacion);
+
+    if (idx === -1) {
+        return {
+            "exito": false,
+            "mensaje": "No se encontró la tarjeta de crédito."
+        };
+    }
+
+    const tc = tarjetaDesdeDatos(tarjetas[idx]);
+    const res = tc.abonar(valor);
+
+    if (!res.exito) {
+        return res;
+    }
+
+    tarjetas[idx] = tarjetaADatos(tc);
+    guardarTarjetas(tarjetas);
+
+    return res;
+}
+
 //Consignar
 export function consignar(identificacion, numeroCuenta, monto) {
     const montoNumero = Number(monto);

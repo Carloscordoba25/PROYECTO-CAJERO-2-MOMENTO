@@ -1,0 +1,7 @@
+{
+    "name": "cajero-mi-plata",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "description": "Cajero web Mi Plata Financial Bank. type: module permite ejecutar las pruebas de /tests con Node sin transpilar."
+}

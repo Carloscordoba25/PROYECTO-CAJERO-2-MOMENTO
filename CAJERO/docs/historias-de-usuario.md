@@ -61,9 +61,9 @@ Cada historia incluye:
 | HU-10 | Transferir dinero | Cliente | Transacciones | Alta | 8 | ✅ |
 | HU-11 | Ver movimientos | Cliente | Historial | Alta | 5 | ✅ |
 | HU-12 | Ver y editar perfil | Cliente | Perfil | Media | 5 | ⏳ |
-| HU-13 | Comprar/abonar con tarjeta de crédito | Cliente | Tarjeta | Baja | 8 | ⏳ |
+| HU-13 | Comprar/abonar con tarjeta de crédito | Cliente | Tarjeta | Alta | 5 | ✅ |
 
-> **Avance:** 8 de 13 historias implementadas (el núcleo del cajero está completo).
+> **Avance:** 9 de 13 historias implementadas (se añadió HU-13: compra y abono con Tarjeta de Crédito).
 
 ---
 
@@ -274,23 +274,28 @@ Cada historia incluye:
 
 ---
 
-## 7. Épica 5 — Tarjeta de crédito (pendiente)
+## 7. Épica 5 — Tarjeta de crédito
 
 ### HU-13 — Comprar y abonar con tarjeta de crédito
 
 - **Como** cliente, **quiero** usar mi tarjeta de crédito para compras a cuotas y abonos, **para** financiar mis compras.
-- **Prioridad:** Baja · **Estimación:** 8 · **Estado:** ⏳ Pendiente
+- **Prioridad:** Alta · **Estimación:** 5 · **Estado:** ✅ Implementada
 
-**Criterios de aceptación** *(a definir)*
+**Criterios de aceptación**
 
-1. **Dado** un cupo disponible, **cuando** realizo una compra, **entonces** la deuda aumenta y el cupo disponible baja.
-2. **Dado** que elijo cuotas, **entonces** se calcula la tasa y la cuota mensual.
-3. **Dado** un abono, **entonces** la deuda disminuye.
+1. **Dado** un cupo disponible, **cuando** realizo una compra a cuotas, **entonces** la deuda aumenta, el cupo disponible disminuye y se muestra la cuota mensual.
+2. **Dado** que ingreso un monto inválido (cero, negativo o vacío), **cuando** intento comprar, **entonces** se muestra un error y no cambia la deuda.
+3. **Dado** que ingreso un número de cuotas no válido (< 1 o no entero), **cuando** intento comprar, **entonces** se muestra un error.
+4. **Dado** que intento comprar por encima del cupo disponible, **cuando** envío, **entonces** se muestra "Cupo insuficiente. Disponible: $...".
+5. **Dado** un abono válido, **cuando** lo realizo, **entonces** la deuda disminuye y el cupo disponible aumenta.
+6. **Dado** que intento abonar más de lo que debo, **cuando** envío, **entonces** se muestra un error.
+7. **Dado** una operación exitosa, **entonces** la tabla de tarjetas se actualiza mostrando deuda y cupo disponible.
 
 **Reglas de negocio**
 
 - Cupo inicial: **$2.000.000**.
 - Tasas por cuotas: hasta 2 cuotas → **0 %**; de 3 a 6 → **1,9 %**; 7 o más → **2,3 %**.
+- El abono **nunca** puede superar la deuda existente.
 
 ---
 

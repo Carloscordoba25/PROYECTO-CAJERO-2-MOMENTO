@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Panel de Tarjeta de Crédito de Mi Plata Financial Bank.">
+    <title>Tarjeta de crédito | Mi Plata Financial Bank</title>
+    <link rel="stylesheet" href="../js/styles/estilos.css">
+</head>
+<body>
+    <header class="encabezado-bancario">
+        <a class="enlace-inicio" href="index.html" aria-label="Volver a la página principal de Mi Plata Financial Bank">
+            <span class="logo-texto">MI PLATA</span>
+            <span class="logo-subtexto">FINANCIAL BANK</span>
+        </a>
+        <nav class="navegacion-principal" aria-label="Navegación principal">
+            <a href="index.html" class="enlace-nav">Inicio</a>
+            <a href="transacciones.html" class="enlace-nav">Transacciones</a>
+            <a href="tarjetas.html" class="enlace-nav">Tarjetas</a>
+            <a href="iniciar-sesion.html" class="enlace-nav">Iniciar sesión</a>
+        </nav>
+    </header>
+
+    <main class="contenido-principal">
+        <section id="panel-tarjeta-credito" class="seccion-panel seccion-transacciones">
+            <div class="encabezado-panel">
+                <p class="texto-sobrelinea">Crédito · Oro</p>
+                <h1 class="titulo-panel">Tarjeta de crédito</h1>
+                <p class="texto-descripcion">Consulta el estado de tu tarjeta, realiza compras a cuotas y abona a tu deuda.</p>
+            </div>
+
+            <nav class="cuadricula-operaciones" aria-label="Operaciones con tarjeta de crédito">
+                <a class="tarjeta-operacion" href="#mis-tarjetas"><span class="icono" aria-hidden="true">◉</span>Ver tarjetas</a>
+                <a class="tarjeta-operacion" href="#comprar-tarjeta"><span class="icono" aria-hidden="true">＋</span>Comprar a cuotas</a>
+                <a class="tarjeta-operacion" href="#abonar-tarjeta"><span class="icono" aria-hidden="true">−</span>Abonar a la deuda</a>
+                <a class="tarjeta-operacion salir boton-cerrar-sesion" href="iniciar-sesion.html"><span class="icono" aria-hidden="true">↪</span>Cerrar sesión</a>
+            </nav>
+
+            <p id="mensaje-tarjeta" class="aviso-informativo">Las tasas aplican según el número de cuotas: hasta 2 cuotas sin interés, de 3 a 6 cuotas 1.9%, 7 cuotas o más 2.3%.</p>
+
+            <section id="mis-tarjetas" class="seccion-operacion">
+                <h2 class="titulo-operacion">Mis tarjetas de crédito</h2>
+                <div class="contenedor-tabla">
+                    <table class="tabla-movimientos">
+                        <thead>
+                            <tr>
+                                <th scope="col">Número de tarjeta</th>
+                                <th scope="col">Cupo</th>
+                                <th scope="col">Deuda</th>
+                                <th scope="col">Cupo disponible</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpo-tarjetas">
+                            <tr>
+                                <td colspan="4">No hay tarjetas registradas para mostrar.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="comprar-tarjeta" class="seccion-operacion">
+                <h2 class="titulo-operacion">Compra a cuotas</h2>
+                <form id="form-compra-tarjeta" class="formulario formulario-operacion">
+                    <div class="grupo-entrada">
+                        <label class="etiqueta" for="tarjeta-seleccionada">Tarjeta de crédito</label>
+                        <select class="campo-texto" id="tarjeta-seleccionada" name="tarjeta-seleccionada"></select>
+                    </div>
+                    <div class="grupo-entrada">
+                        <label class="etiqueta" for="capital-compra">Valor de la compra</label>
+                        <input class="campo-texto" id="capital-compra" name="capital-compra" type="number" min="0.01" step="0.01" placeholder="0.00" required>
+                    </div>
+                    <div class="grupo-entrada">
+                        <label class="etiqueta" for="cuotas-compra">Número de cuotas</label>
+                        <input class="campo-texto" id="cuotas-compra" name="cuotas-compra" type="number" min="1" step="1" placeholder="1" required>
+                    </div>
+                    <p id="mostrar-cuota" class="nota-cuenta"></p>
+                    <button class="boton-accion" type="submit">Continuar compra</button>
+                    <p class="nota-cuenta">La compra se aprueba solo si existe cupo disponible. La cuota mensual se calcula con la tasa que corresponda al plazo elegido.</p>
+                </form>
+            </section>
+
+            <section id="abonar-tarjeta" class="seccion-operacion">
+                <h2 class="titulo-operacion">Abonar a la deuda</h2>
+                <form id="form-abono-tarjeta" class="formulario formulario-operacion">
+                    <div class="grupo-entrada">
+                        <label class="etiqueta" for="tarjeta-abono">Tarjeta de crédito</label>
+                        <select class="campo-texto" id="tarjeta-abono" name="tarjeta-abono"></select>
+                    </div>
+                    <div class="grupo-entrada">
+                        <label class="etiqueta" for="monto-abono">Monto a abonar</label>
+                        <input class="campo-texto" id="monto-abono" name="monto-abono" type="number" min="0.01" step="0.01" placeholder="0.00" required>
+                    </div>
+                    <button class="boton-accion" type="submit">Continuar abono</button>
+                    <p class="nota-cuenta">El abono reduce la deuda y libera cupo. No puedes abonar más del valor que debes.</p>
+                </form>
+            </section>
+        </section>
+    </main>
+
+    <footer class="pie-pagina">
+        <div class="informacion-corporativa">
+            <a class="enlace-inicio enlace-pie" href="index.html">MI PLATA FINANCIAL BANK</a>
+            <p>&copy; 2026 Mi Plata Financial Bank. Todos los derechos reservados.</p>
+        </div>
+        <nav id="redes-sociales" class="redes-sociales" aria-label="Redes sociales">
+            <a class="enlace-red" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">Facebook</a>
+            <a class="enlace-red" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a class="enlace-red" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </nav>
+    </footer>
+    <script type="module" src="../js/controller/navegacion.js"></script>
+    <script type="module" src="../js/controller/tarjetas.js"></script>
+</body>
+</html>

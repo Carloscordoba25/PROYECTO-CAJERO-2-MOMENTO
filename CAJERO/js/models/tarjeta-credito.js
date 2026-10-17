@@ -108,7 +108,36 @@ export class TarjetaCredito{
             cuotas,
             tasa,
             cuotaMensual,
-            deudaNueva: this.#deuda
+            deudaNueva: this.#deuda,
+            cupoDisponible: this.cupoDisponible()
+        };
+    }
+
+    // Abona a la deuda. Nunca permite abonar más que la deuda existente.
+    abonar(monto) {
+        const valor = Number(monto);
+
+        if (!Number.isFinite(valor) || valor <= 0) {
+            return {
+                exito: false,
+                mensaje: "El monto a abonar debe ser un número mayor a cero."
+            };
+        }
+
+        if (valor > this.#deuda) {
+            return {
+                exito: false,
+                mensaje: "El monto a abonar no puede superar la deuda."
+            };
+        }
+
+        this.#deuda = this.#deuda - valor;
+
+        return {
+            exito: true,
+            mensaje: "Abono realizado correctamente.",
+            deudaNueva: this.#deuda,
+            cupoDisponible: this.cupoDisponible()
         };
     }
 }

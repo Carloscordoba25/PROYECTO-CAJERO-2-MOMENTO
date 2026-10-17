@@ -1,5 +1,5 @@
 import { leerSesion } from "../config/persistencia.js";
-import { obtenerCuentas, consignar, retirar, transferir } from "../service/servicios.js";
+import { obtenerCuentas, consignar, retirar, transferir, listarMovimientos } from "../service/servicios.js";
 
 // Referencias a la sesión y a los controles usados en las transacciones.
 const sesion = leerSesion();
@@ -10,6 +10,7 @@ const cuentaDestino = document.querySelector("#cuenta-destino");
 const tipoDestino = document.querySelector("#tipo-destino");
 const identificacionDestino = document.querySelector("#identificacion-destino");
 const grupoIdentificacionDestino = identificacionDestino.closest(".grupo-entrada");
+const cuerpoMovimientos = document.querySelector("#cuerpo-movimientos");
 
 let cuentasUsuario = [];
 let cuentasDestinoExterno = [];
@@ -35,6 +36,7 @@ function inicializarTransacciones() {
     actualizarSelectores();
     actualizarSaldo();
     actualizarDestino();
+    actualizarMovimientos();
 
     document.querySelector("#cuenta-seleccionada").addEventListener("change", actualizarSaldo);
     cuentaOrigen.addEventListener("change", actualizarDestino);
@@ -236,6 +238,61 @@ function recargarCuentas() {
     cuentasUsuario = respuesta.cuentas;
     actualizarSelectores();
     actualizarSaldo();
+    actualizarMovimientos();
+}
+
+// Pinta el historial de movimientos del usuario, del más reciente al más antiguo.
+function actualizarMovimientos() {
+    const respuesta = listarMovimientos(sesion.identificacion);
+    if (!respuesta.exito) {
+        return;
+    }
+
+    cuerpoMovimientos.replaceChildren();
+
+    if (respuesta.movimientos.length === 0) {
+        const fila = document.createElement("tr");
+        const celda = document.createElement("td");
+        celda.colSpan = 3;
+        celda.textContent = "No hay movimientos registrados para mostrar.";
+        fila.appendChild(celda);
+        cuerpoMovimientos.appendChild(fila);
+        return;
+    }
+
+    respuesta.movimientos.forEach(movimiento => {
+        const fila = document.createElement("tr");
+        fila.appendChild(crearCelda(formatearFecha(movimiento.fecha)));
+        fila.appendChild(crearCelda(nombreTipoMovimiento(movimiento.tipo)));
+        fila.appendChild(crearCelda(formatearSaldo(movimiento.valor)));
+        cuerpoMovimientos.appendChild(fila);
+    });
+}
+
+// Crea una celda de tabla con el texto indicado.
+function crearCelda(texto) {
+    const celda = document.createElement("td");
+    celda.textContent = texto;
+    return celda;
+}
+
+// Convierte el tipo interno de movimiento a su nombre visible en la interfaz.
+function nombreTipoMovimiento(tipo) {
+    if (tipo === "consignacion") {
+        return "Consignación";
+    }
+    if (tipo === "retiro") {
+        return "Retiro";
+    }
+    return "Transferencia";
+}
+
+// Presenta la fecha y hora del movimiento en formato local.
+function formatearFecha(fecha) {
+    return new Date(fecha).toLocaleString("es-CO", {
+        dateStyle: "short",
+        timeStyle: "short"
+    });
 }
 
 // Formatea valores monetarios en pesos colombianos.

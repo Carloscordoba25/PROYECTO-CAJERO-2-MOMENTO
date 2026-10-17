@@ -39,7 +39,7 @@
                 <div class="saldo-cuenta">
                     <span class="etiqueta">Saldo actual</span>
                     <strong class="valor-saldo">Saldo no disponible</strong>
-                    <span class="nota-cuenta">El saldo real se muestra al conectar el servicio bancario.</span>
+                    <span class="nota-cuenta">El saldo se actualiza automáticamente con cada operación.</span>
                 </div>
             </div>
 
@@ -53,11 +53,11 @@
                 <a class="tarjeta-operacion salir boton-cerrar-sesion" href="iniciar-sesion.html"><span class="icono" aria-hidden="true">↪</span>Cerrar sesión</a>
             </nav>
 
-            <p class="aviso-prototipo">Prototipo de interfaz: las operaciones y cambios de perfil requieren autenticación y conexión a un servicio bancario; esta página no ejecuta ni guarda transacciones.</p>
+            <p class="aviso-informativo">Sucursal virtual funcional: consignaciones, retiros y transferencias se guardan en este navegador y quedan registradas en «Ver movimientos».</p>
 
             <section id="consultar-saldo" class="seccion-operacion">
                 <h2 class="titulo-operacion">Consultar saldo</h2>
-                <p class="texto-descripcion">Selecciona una cuenta para consultar su saldo actual al conectar el servicio bancario.</p>
+                <p class="texto-descripcion">Selecciona una cuenta en el resumen superior para consultar su saldo actual.</p>
             </section>
 
             <section id="consignar-dinero" class="seccion-operacion">
@@ -68,7 +68,7 @@
                         <input class="campo-texto" id="monto-consignacion" name="monto-consignacion" type="number" min="0.01" step="0.01" placeholder="0.00" required>
                     </div>
                     <button class="boton-accion" type="submit">Continuar consignación</button>
-                    <p class="nota-cuenta">El monto debe ser un número positivo mayor a cero. El saldo se actualizará tras confirmar la operación en el servicio bancario.</p>
+                    <p class="nota-cuenta">El monto debe ser un número positivo mayor a cero. El saldo se actualiza al confirmar la operación.</p>
                 </form>
             </section>
 
@@ -98,14 +98,14 @@
                                 <th scope="col">Valor</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="cuerpo-movimientos">
                             <tr>
                                 <td colspan="3">No hay movimientos registrados para mostrar.</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <p class="nota-cuenta">El historial conectado se presenta ordenado por fecha, desde el movimiento más reciente.</p>
+                <p class="nota-cuenta">El historial se presenta ordenado por fecha, desde el movimiento más reciente.</p>
             </section>
 
             <section id="transferir-dinero" class="seccion-operacion">
@@ -141,7 +141,7 @@
                         <input class="campo-texto" id="monto-transferencia" name="monto-transferencia" type="number" min="0.01" step="0.01" placeholder="0.00" required>
                     </div>
                     <button class="boton-accion" type="submit">Continuar transferencia</button>
-                    <p class="nota-cuenta">No se permiten transferencias al mismo producto. La validación de destino y el envío requieren el servicio bancario.</p>
+                    <p class="nota-cuenta">No se permiten transferencias al mismo producto. Elige otro producto propio o la cuenta de otro usuario.</p>
                 </form>
             </section>
 

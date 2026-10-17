@@ -75,6 +75,71 @@ body {
     color: var(--acento-celeste);
 }
 
+.menu-usuario {
+    position: relative;
+}
+
+.boton-menu-usuario {
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 4px;
+    padding: 0.55rem 0.8rem;
+    background: transparent;
+    color: var(--texto-claro);
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.boton-menu-usuario:hover,
+.boton-menu-usuario:focus-visible {
+    border-color: var(--acento-celeste);
+    color: var(--acento-celeste);
+}
+
+.desplegable-usuario {
+    position: absolute;
+    z-index: 10;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    min-width: 12rem;
+    padding: 0.75rem;
+    border: 1px solid var(--borde-suave);
+    border-radius: 6px;
+    background: var(--blanco);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+.desplegable-usuario[hidden] {
+    display: none;
+}
+
+.nombre-usuario {
+    display: block;
+    overflow-wrap: anywhere;
+    padding: 0.4rem 0.5rem 0.75rem;
+    color: var(--texto-oscuro);
+    font-weight: 600;
+}
+
+.boton-cerrar-sesion {
+    cursor: pointer;
+}
+
+.desplegable-usuario .boton-cerrar-sesion {
+    width: 100%;
+    border: 0;
+    border-radius: 4px;
+    padding: 0.6rem 0.5rem;
+    background: var(--azul-primario);
+    color: var(--texto-claro);
+    font-size: 0.95rem;
+    text-align: left;
+}
+
+.desplegable-usuario .boton-cerrar-sesion:hover,
+.desplegable-usuario .boton-cerrar-sesion:focus-visible {
+    background: var(--azul-secundario);
+}
+
 .boton-destacado {
     background-color: var(--acento-celeste);
     color: var(--azul-primario);

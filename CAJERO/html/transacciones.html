@@ -16,7 +16,7 @@
         <nav class="navegacion-principal" aria-label="Navegación principal">
             <a href="index.html" class="enlace-nav">Inicio</a>
             <a href="tarjetas.html" class="enlace-nav">Tarjetas</a>
-            <a href="iniciar-sesion.html" class="enlace-nav">Cerrar sesión</a>
+            <a href="iniciar-sesion.html" class="enlace-nav">Iniciar sesión</a>
         </nav>
     </header>
 
@@ -50,7 +50,7 @@
                 <a class="tarjeta-operacion" href="#ver-movimientos"><span class="icono" aria-hidden="true">≡</span>Ver movimientos</a>
                 <a class="tarjeta-operacion" href="#transferir-dinero"><span class="icono" aria-hidden="true">⇄</span>Transferir</a>
                 <a class="tarjeta-operacion" href="#editar-perfil"><span class="icono" aria-hidden="true">◎</span>Perfil</a>
-                <a class="tarjeta-operacion salir" href="iniciar-sesion.html"><span class="icono" aria-hidden="true">↪</span>Cerrar sesión</a>
+                <a class="tarjeta-operacion salir boton-cerrar-sesion" href="iniciar-sesion.html"><span class="icono" aria-hidden="true">↪</span>Cerrar sesión</a>
             </nav>
 
             <p class="aviso-prototipo">Prototipo de interfaz: las operaciones y cambios de perfil requieren autenticación y conexión a un servicio bancario; esta página no ejecuta ni guarda transacciones.</p>
@@ -67,7 +67,7 @@
                         <label class="etiqueta" for="monto-consignacion">Monto a consignar</label>
                         <input class="campo-texto" id="monto-consignacion" name="monto-consignacion" type="number" min="0.01" step="0.01" placeholder="0.00" required>
                     </div>
-                    <button class="boton-accion" type="button">Continuar consignación</button>
+                    <button class="boton-accion" type="submit">Continuar consignación</button>
                     <p class="nota-cuenta">El monto debe ser un número positivo mayor a cero. El saldo se actualizará tras confirmar la operación en el servicio bancario.</p>
                 </form>
             </section>
@@ -79,7 +79,7 @@
                         <label class="etiqueta" for="monto-retiro">Monto a retirar</label>
                         <input class="campo-texto" id="monto-retiro" name="monto-retiro" type="number" min="0.01" step="0.01" placeholder="0.00" required>
                     </div>
-                    <button class="boton-accion" type="button">Continuar retiro</button>
+                    <button class="boton-accion" type="submit">Continuar retiro</button>
                     <ul class="lista-beneficios">
                         <li>Cuenta de Ahorros: el retiro no puede superar el saldo disponible y se aplica el interés mensual del 1.5% al retirar.</li>
                         <li>Cuenta Corriente: se permite retirar hasta el saldo actual más un 20% de sobregiro.</li>
@@ -140,7 +140,7 @@
                         <label class="etiqueta" for="monto-transferencia">Monto a transferir</label>
                         <input class="campo-texto" id="monto-transferencia" name="monto-transferencia" type="number" min="0.01" step="0.01" placeholder="0.00" required>
                     </div>
-                    <button class="boton-accion" type="button">Continuar transferencia</button>
+                    <button class="boton-accion" type="submit">Continuar transferencia</button>
                     <p class="nota-cuenta">No se permiten transferencias al mismo producto. La validación de destino y el envío requieren el servicio bancario.</p>
                 </form>
             </section>
@@ -166,7 +166,7 @@
                             <label class="etiqueta" for="perfil-usuario">Nombre de usuario</label>
                             <input class="campo-texto" id="perfil-usuario" name="perfil-usuario" type="text" autocomplete="username">
                         </div>
-                        <button class="boton-accion" type="button">Guardar cambios</button>
+                        <button class="boton-accion" type="submit">Guardar cambios</button>
                     </form>
                 </details>
                 <details class="desplegable-beneficios">
@@ -188,7 +188,7 @@
                             <label class="etiqueta" for="clave-confirmacion">Confirmar nueva contraseña</label>
                             <input class="campo-texto" id="clave-confirmacion" name="clave-confirmacion" type="password" autocomplete="new-password" required>
                         </div>
-                        <button class="boton-accion" type="button">Guardar nueva contraseña</button>
+                        <button class="boton-accion" type="submit">Guardar nueva contraseña</button>
                     </form>
                 </details>
             </section>
@@ -206,6 +206,7 @@
             <a class="enlace-red" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </nav>
     </footer>
+    <script type="module" src="../js/controller/navegacion.js"></script>
     <script type="module" src="../js/controller/transacciones.js"></script>
 </body>
 </html>

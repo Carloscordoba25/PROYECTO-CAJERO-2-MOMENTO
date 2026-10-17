@@ -136,7 +136,7 @@ export function consultarCliente(identificacion) {
             "correo" : validarUsuario.correo,
             "usuario" : validarUsuario.usuario,
             "estado" : validarUsuario.estado
-}
+        }
     };
 }
 
@@ -349,7 +349,6 @@ function tarjetaADatos(tarjeta) {
         deuda: tarjeta.deuda,
         clienteIdentificacion: tarjeta.clienteIdentificacion
     };
-
 }
 
 /* --------- Traductores inversos: datos planos -> instancia --------- */
@@ -382,5 +381,3 @@ function tarjetaDesdeDatos(datos) {
     tarjeta.deuda = datos.deuda;
     return tarjeta;
 }
-
-

@@ -30,8 +30,24 @@ export class Cliente {
         return this.#identificacion;
     }
 
+    get nombre() {
+        return this.#nombre;
+    }
+
+    get celular() {
+        return this.#celular;
+    }
+
+    get correo() {
+        return this.#correo;
+    }
+
     get usuario() {
         return this.#usuario;
+    }
+
+    get contrasena() {
+        return this.#contrasena;
     }
 
     // Estado de SOLO LECTURA para el exterior: solo se modifica con
@@ -40,37 +56,25 @@ export class Cliente {
         return this.#estado;
     }
 
-    // Editables (el panel Perfil los modificará más adelante)
-    get nombre() {
-        return this.#nombre;
+    get fechaBloqueo() {
+        return this.#fechaBloqueo;
     }
+
+    // Editables (el panel Perfil los modificará más adelante)
     set nombre(valor) {
         this.#nombre = valor;
     }
 
-    get celular() {
-        return this.#celular;
-    }
     set celular(valor) {
         this.#celular = valor;
     }
 
-    get correo() {
-        return this.#correo;
-    }
     set correo(valor) {
         this.#correo = valor;
     }
 
-    get contrasena() {
-        return this.#contrasena;
-    }
     set contrasena(valor) {
         this.#contrasena = valor;
-    }
-
-    get fechaBloqueo() {
-        return this.#fechaBloqueo;
     }
 
     /* ------------------------- Control del estado ------------------------- */
@@ -108,8 +112,8 @@ export class Cliente {
             return Cliente.MINUTOS_BLOQUEO;
         }
 
-        const restante = (this.#fechaBloqueo.getTime()  + Cliente.MINUTOS_BLOQUEO * 60000 - Date.now());
-        return Math.max(1,Math.ceil(restante / 60000));
+        const restante = (this.#fechaBloqueo.getTime() + Cliente.MINUTOS_BLOQUEO * 60000 - Date.now());
+        return Math.max(1, Math.ceil(restante / 60000));
     }
 
     // Indica si el cliente está bloqueado.

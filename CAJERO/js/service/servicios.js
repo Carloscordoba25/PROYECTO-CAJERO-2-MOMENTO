@@ -1,4 +1,4 @@
-import { leerUsuarios, guardarUsuarios, leerCuentas, guardarCuentas, leerTarjetas, guardarTarjetas, aumentarIntentos, reiniciarIntentos, guardarSesion } from "../config/persistencia.js";
+import { leerUsuarios, guardarUsuarios, leerCuentas, guardarCuentas, leerTarjetas, guardarTarjetas, aumentarIntentos, reiniciarIntentos, guardarSesion, leerSesion, cerrarSesion } from "../config/persistencia.js";
 import { Cliente } from "../models/cliente.js";
 import { CuentaAhorros } from "../models/cuenta-ahorros.js";
 import { CuentaCorriente } from "../models/cuenta-corriente.js";
@@ -66,17 +66,27 @@ export function iniciarSesion(usuario, contrasena) {
     if(indice === -1) {
         return {
             "exito" : false,
-            "mensaje" : "El usuario no ha sido encontrado."
+            "mensaje" : "Usuario no encontrado."
         }
     }
 
     const cliente = clienteDesdeDatos(usuariosActuales[indice]);
 
-    if(cliente.estaBloqueado()) {
-        return {
+    // Si el bloqueo sigue vigente, no puede intentar todavia.
+    if(cliente.bloqueoVigente()) {
+        return{
             "exito" : false,
-            "mensaje" : "La cuenta del usuario " + usuario + " esta bloqueada."
+            "mensaje" : "Cuenta bloqueada. Intenta de nuevo en " 
+            + cliente.minutosRestantesBloqueo() + " min."
         }
+    }
+
+    // Si el bloqueo ya expiro, se desbloquea automaticamente y sigue el flujo.
+    if(cliente.estaBloqueado()){
+        cliente.desbloquear();
+        reiniciarIntentos(usuario)
+        usuariosActuales[indice] = clienteADatos(cliente);
+        guardarUsuarios(usuariosActuales);
     }
 
     if(cliente.contrasena !== contrasena) {
@@ -87,7 +97,7 @@ export function iniciarSesion(usuario, contrasena) {
             guardarUsuarios(usuariosActuales);
             return {
                 "exito" : false,
-                "mensaje" : "Cuenta bloqueada por superar 3 intentos fallidos."
+                "mensaje" : "Cuenta bloqueada por 3 intentos fallidos."
             }
         }
         return {
@@ -282,6 +292,32 @@ export function transferir(identificacionOrigen, numeroCuentaOrigen, numeroCuent
     };
 }
 
+// Sesion activa
+export function obtenerSesionActiva() {
+    const sesionActiva = leerSesion();
+    if((sesionActiva === null) || (sesionActiva === undefined)) {
+        return {
+            "exito" : false,
+            "mensaje" : "No se encontro sesion activa"
+        };
+    }
+    return {
+        "exito" : true,
+        "mensaje" : "OK",
+        "sesion" : sesionActiva
+    };
+}
+
+// Cerrar Sesion
+export function cerrarSesionUsuario() {
+    cerrarSesion();
+    return {
+        "exito" : true,
+        "mensaje" : "Sesion cerrada"
+    };
+}
+
+// Convierte una instancia Cliente en objeto plano para guardar.
 function clienteADatos(cliente) {
     return {
         identificacion: cliente.identificacion,
@@ -290,10 +326,12 @@ function clienteADatos(cliente) {
         correo: cliente.correo,
         usuario: cliente.usuario,
         contrasena: cliente.contrasena,
-        estado: cliente.estado
+        estado: cliente.estado,
+        fechaBloqueo: cliente.fechaBloqueo ? cliente.fechaBloqueo.toISOString() : null
     };
 }
 
+// Convierte una instancia Cuenta en objeto plano para guardar.
 function cuentaADatos(cuenta) {
     return {
         tipo: cuenta.tipo,
@@ -303,6 +341,7 @@ function cuentaADatos(cuenta) {
     };
 }
 
+// Convierte una instancia TarjetaCredito en objeto plano para guardar.
 function tarjetaADatos(tarjeta) {
     return {
         numero: tarjeta.numero,
@@ -315,6 +354,7 @@ function tarjetaADatos(tarjeta) {
 
 /* --------- Traductores inversos: datos planos -> instancia --------- */
 
+// Reconstruye un Cliente desde el objeto plano guardado.
 function clienteDesdeDatos(datos) {
     return new Cliente(
         datos.identificacion,
@@ -323,7 +363,8 @@ function clienteDesdeDatos(datos) {
         datos.correo,
         datos.usuario,
         datos.contrasena,
-        datos.estado
+        datos.estado,
+        datos.fechaBloqueo
     );
 }
 
@@ -335,6 +376,7 @@ function cuentaDesdeDatos(datos) {
     return new CuentaCorriente(datos.numero, datos.saldo, datos.clienteIdentificacion);
 }
 
+// Reconstruye una TarjetaCredito desde el objeto plano (restaura su deuda).
 function tarjetaDesdeDatos(datos) {
     const tarjeta = new TarjetaCredito(datos.numero, datos.cupo, datos.clienteIdentificacion);
     tarjeta.deuda = datos.deuda;
